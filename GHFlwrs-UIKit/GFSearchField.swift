@@ -44,6 +44,8 @@ class GFSearchField: UITextField {
         backgroundColor = .tertiarySystemBackground
         autocorrectionType = .no
 
+        returnKeyType = .go
+
         let searchImage = UIImage(systemName: "magnifyingglass")!
         let placeholderString = NSMutableAttributedString()
         placeholderString.append(NSAttributedString(attachment: NSTextAttachment(image: searchImage)))

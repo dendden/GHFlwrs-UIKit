@@ -15,6 +15,7 @@
 		08F3585629F8439B0058845D /* FavoritesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F3585529F8439B0058845D /* FavoritesVC.swift */; };
 		08F3585A29F924510058845D /* GFButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F3585929F924510058845D /* GFButton.swift */; };
 		08F3586029F932710058845D /* GFSearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F3585F29F932710058845D /* GFSearchField.swift */; };
+		08F3586629F97E000058845D /* FollowersListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F3586529F97DFF0058845D /* FollowersListVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		08F3585529F8439B0058845D /* FavoritesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesVC.swift; sourceTree = "<group>"; };
 		08F3585929F924510058845D /* GFButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFButton.swift; sourceTree = "<group>"; };
 		08F3585F29F932710058845D /* GFSearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFSearchField.swift; sourceTree = "<group>"; };
+		08F3586529F97DFF0058845D /* FollowersListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersListVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				08F3582129F832C70058845D /* AppDelegate.swift */,
 				08F3582329F832C70058845D /* SceneDelegate.swift */,
 				08F3584F29F841D40058845D /* SearchVC.swift */,
+				08F3586529F97DFF0058845D /* FollowersListVC.swift */,
 				08F3585529F8439B0058845D /* FavoritesVC.swift */,
 				08F3585929F924510058845D /* GFButton.swift */,
 				08F3585F29F932710058845D /* GFSearchField.swift */,
@@ -167,6 +170,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08F3586029F932710058845D /* GFSearchField.swift in Sources */,
+				08F3586629F97E000058845D /* FollowersListVC.swift in Sources */,
 				08F3585629F8439B0058845D /* FavoritesVC.swift in Sources */,
 				08F3585A29F924510058845D /* GFButton.swift in Sources */,
 				08F3585029F841D40058845D /* SearchVC.swift in Sources */,
@@ -315,7 +319,6 @@
 				INFOPLIST_FILE = "GHFlwrs-UIKit/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -346,7 +349,6 @@
 				INFOPLIST_FILE = "GHFlwrs-UIKit/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
