@@ -1,5 +1,5 @@
 //
-//  GFTextField.swift
+//  GFSearchField.swift
 //  GHFlwrs-UIKit
 //
 //  Created by Денис Трясунов on 26.04.2023.
@@ -16,7 +16,7 @@ import UIKit
 /// + background color of `tertiarySystemBackground`
 /// + border color of `systemGray4`, border width of 2
 /// + corner radius of 10
-class GFTextField: UITextField {
+class GFSearchField: UITextField {
 
     override init(frame: CGRect) {
         super.init(frame: frame)

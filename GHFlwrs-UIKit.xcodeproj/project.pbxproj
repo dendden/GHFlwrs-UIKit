@@ -14,7 +14,7 @@
 		08F3585029F841D40058845D /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F3584F29F841D40058845D /* SearchVC.swift */; };
 		08F3585629F8439B0058845D /* FavoritesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F3585529F8439B0058845D /* FavoritesVC.swift */; };
 		08F3585A29F924510058845D /* GFButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F3585929F924510058845D /* GFButton.swift */; };
-		08F3586029F932710058845D /* GFTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F3585F29F932710058845D /* GFTextField.swift */; };
+		08F3586029F932710058845D /* GFSearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F3585F29F932710058845D /* GFSearchField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +27,7 @@
 		08F3584F29F841D40058845D /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		08F3585529F8439B0058845D /* FavoritesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesVC.swift; sourceTree = "<group>"; };
 		08F3585929F924510058845D /* GFButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFButton.swift; sourceTree = "<group>"; };
-		08F3585F29F932710058845D /* GFTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFTextField.swift; sourceTree = "<group>"; };
+		08F3585F29F932710058845D /* GFSearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFSearchField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +65,7 @@
 				08F3584F29F841D40058845D /* SearchVC.swift */,
 				08F3585529F8439B0058845D /* FavoritesVC.swift */,
 				08F3585929F924510058845D /* GFButton.swift */,
-				08F3585F29F932710058845D /* GFTextField.swift */,
+				08F3585F29F932710058845D /* GFSearchField.swift */,
 				08F3582A29F832CA0058845D /* Assets.xcassets */,
 				08F3582C29F832CA0058845D /* LaunchScreen.storyboard */,
 				08F3582F29F832CA0058845D /* Info.plist */,
@@ -166,7 +166,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08F3586029F932710058845D /* GFTextField.swift in Sources */,
+				08F3586029F932710058845D /* GFSearchField.swift in Sources */,
 				08F3585629F8439B0058845D /* FavoritesVC.swift in Sources */,
 				08F3585A29F924510058845D /* GFButton.swift in Sources */,
 				08F3585029F841D40058845D /* SearchVC.swift in Sources */,
