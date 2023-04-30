@@ -25,7 +25,9 @@ class FollowersListVC: UIViewController {
                     print(">>> \(follower)")
                 }
             case .failure(let error):
-                self.presentGFAlertOnMainThread(title: "Problem 🤦🏼‍♂️", message: error.rawValue)
+                self.presentGFAlertOnMainThread(title: "Problem 🤦🏼‍♂️", message: error.rawValue) {
+                    self.navigationController?.popViewController(animated: true)
+                }
             }
         }
     }

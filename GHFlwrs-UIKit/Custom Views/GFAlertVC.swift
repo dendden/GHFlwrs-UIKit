@@ -18,14 +18,18 @@ class GFAlertVC: UIViewController {
     private var alertMessage: String?
     private var buttonTitle: String?
 
+    private var alertCompletion: (() -> Void)?
+
     let padding: CGFloat = 20
 
-    init(alertTitle: String, alertMessage: String, buttonTitle: String? = "OK") {
+    init(alertTitle: String, alertMessage: String, buttonTitle: String? = "OK", completion: (() -> Void)? = nil) {
         super.init(nibName: nil, bundle: nil)
 
         self.alertTitle = alertTitle
         self.alertMessage = alertMessage
         self.buttonTitle = buttonTitle
+
+        self.alertCompletion = completion
     }
 
     override func viewDidLoad() {
@@ -83,6 +87,9 @@ class GFAlertVC: UIViewController {
 
     @objc func dismissVC() {
         dismiss(animated: true)
+        if let completion = alertCompletion {
+            completion()
+        }
     }
 
     func configureMessageLabel() {
