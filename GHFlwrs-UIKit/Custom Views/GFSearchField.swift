@@ -43,6 +43,7 @@ class GFSearchField: UITextField {
 
         backgroundColor = .tertiarySystemBackground
         autocorrectionType = .no
+        autocapitalizationType = .none
 
         returnKeyType = .go
 
