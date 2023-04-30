@@ -35,7 +35,7 @@ class SearchVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationController?.isNavigationBarHidden = true
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
 
     func createDismissKeyboardTapGesture() {
@@ -43,10 +43,12 @@ class SearchVC: UIViewController {
             target: self.view,
             action: #selector(UIView.endEditing)
         )
-        view.addGestureRecognizer(tap )
+        view.addGestureRecognizer(tap)
     }
 
     @objc func pushFollowersListVC() {
+
+        view.endEditing(true)   // dismiss keyboard
 
         guard isUsernameEntered else {
             presentGFAlertOnMainThread(
