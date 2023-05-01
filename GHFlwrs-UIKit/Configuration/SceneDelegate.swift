@@ -30,7 +30,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func makeSearchNC() -> UINavigationController {
         let searchVC = SearchVC()
         let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
+        appearance.configureWithDefaultBackground()
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
         UINavigationBar.appearance().prefersLargeTitles = true
@@ -58,7 +58,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func makeTabBar() -> UITabBarController {
         let tabBar = UITabBarController()
         let appearance = UITabBarAppearance()
-        appearance.configureWithOpaqueBackground()
+        appearance.configureWithDefaultBackground()
         UITabBar.appearance().standardAppearance = appearance
         UITabBar.appearance().scrollEdgeAppearance = appearance
         UITabBar.appearance().tintColor = .systemGreen
