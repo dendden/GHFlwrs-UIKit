@@ -15,6 +15,8 @@ class FollowersListVC: UIViewController {
 
     var username: String!
     var followers: [Follower] = []
+    var page = 1
+    var userHasMoreFollowersToLoad = true
 
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
@@ -25,7 +27,7 @@ class FollowersListVC: UIViewController {
         configureVC()
         configureCollectionView()
 
-        getFollowers()
+        getFollowers(username: username, page: page)
         configureDataSource()
     }
 
@@ -45,19 +47,35 @@ class FollowersListVC: UIViewController {
             collectionViewLayout: UIHelper.makeThreeColumnFlowLayout(in: view)
         )
         view.addSubview(collectionView)
+        collectionView.delegate = self
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
     }
 
-    private func getFollowers() {
+    private func getFollowers(username: String, page: Int) {
 
-        NetworkManager.shared.getFollowers(for: username, page: 1) { [weak self] result in
+        showLoadingProgressView()
 
-            guard let self = self else { return }
+        NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
+
+            guard let self = self else {
+                return
+            }
+
+            self.dismissLoadingProgressView()
 
             switch result {
             case .success(let followers):
-                self.followers = followers
-                self.updateData()
+                if followers.count < NetworkManager.shared.followersPerPage {
+                    self.userHasMoreFollowersToLoad = false
+                }
+                DispatchQueue.main.async {
+                    self.followers.append(contentsOf: followers)
+                    if self.followers.isEmpty {
+                        let message = "This user doesn't have any followers yet. You can be the first! 🥹"
+                        self.showEmptyStateView(with: message, in: self.view)
+                    }
+                    self.updateData()
+                }
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "Problem 🤦🏼‍♂️", message: error.rawValue) {
                     self.navigationController?.popViewController(animated: true)
@@ -87,5 +105,19 @@ class FollowersListVC: UIViewController {
         snapshot.appendItems(followers)
 
         dataSource.apply(snapshot, animatingDifferences: true)  // might need to dispatch to main if get warnings
+    }
+}
+
+extension FollowersListVC: UICollectionViewDelegate {
+
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        let offset = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let screenHeight = scrollView.frame.size.height
+
+        if offset > (contentHeight - screenHeight) && userHasMoreFollowersToLoad {
+            page += 1
+            getFollowers(username: username, page: page)
+        }
     }
 }
