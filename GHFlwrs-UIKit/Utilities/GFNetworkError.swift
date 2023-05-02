@@ -1,5 +1,5 @@
 //
-//  ErrorMessage.swift
+//  GFNetworkError.swift
 //  GHFlwrs-UIKit
 //
 //  Created by Денис Трясунов on 30.04.2023.

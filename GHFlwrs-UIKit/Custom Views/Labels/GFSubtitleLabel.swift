@@ -1,13 +1,13 @@
 //
-//  GFTitleLabel.swift
+//  GFSubtitleLabel.swift
 //  GHFlwrs-UIKit
 //
-//  Created by Денис Трясунов on 26.04.2023.
+//  Created by Денис Трясунов on 02.05.2023.
 //
 
 import UIKit
 
-class GFTitleLabel: UILabel {
+class GFSubtitleLabel: UILabel {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -19,18 +19,18 @@ class GFTitleLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(textAlignment: NSTextAlignment, fontSize: CGFloat) {
+    init(fontSize: CGFloat, textAlignment: NSTextAlignment = .left) {
         super.init(frame: .zero)
 
         self.textAlignment = textAlignment
-        self.font = UIFont.systemFont(ofSize: fontSize, weight: .bold)
+        self.font = UIFont.systemFont(ofSize: fontSize, weight: .medium)
 
         configure()
     }
 
     private func configure() {
         // num of lines will get configured when this label is called
-        textColor = .label
+        textColor = .secondaryLabel
         adjustsFontSizeToFitWidth = true
         minimumScaleFactor = 0.85
         lineBreakMode = .byTruncatingTail

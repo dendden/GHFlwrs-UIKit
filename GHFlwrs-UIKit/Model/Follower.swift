@@ -9,8 +9,8 @@ import Foundation
 
 struct Follower: Codable, Hashable {
 
-    var login: String
-    var avatarUrl: String   // will be converted from snake_case by KeyDecodingStrategy
+    let login: String
+    let avatarUrl: String   // will be converted from snake_case by KeyDecodingStrategy
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(login)

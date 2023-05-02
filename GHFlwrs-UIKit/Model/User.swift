@@ -9,8 +9,8 @@ import Foundation
 
 struct User: Codable {
 
-    var login: String
-    var avatarUrl: String
+    let login: String
+    let avatarUrl: String
     var name: String?
     var location: String?
     var bio: String?
@@ -23,5 +23,5 @@ struct User: Codable {
     var followers: Int
     var followersUrl: String
 
-    var createdAt: String
+    let createdAt: String
 }

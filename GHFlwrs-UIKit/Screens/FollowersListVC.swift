@@ -141,7 +141,7 @@ extension FollowersListVC: UICollectionViewDelegate {
         }
 
         let destinationVC = UserInfoVC()
-        destinationVC.user = follower
+        destinationVC.username = follower.login
         let destinationNC = UINavigationController(rootViewController: destinationVC)
         present(destinationNC, animated: true)
     }

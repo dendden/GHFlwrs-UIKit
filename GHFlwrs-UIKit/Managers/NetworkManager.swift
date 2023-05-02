@@ -71,6 +71,52 @@ class NetworkManager {
         task.resume()
     }
 
+    /// Executes the task of fetching user JSON data and
+    /// interpreting that data into a ``User`` struct.
+    /// - Parameters:
+    ///   - username: A name of user whose information must be
+    ///   retrieved.
+    ///   - completion: A result type with the ``User`` struct
+    ///   in `.success` case and a descriptive ``GFNetworkError``
+    ///   in case of `.failure`.
+    func getUserInfo(
+        for username: String,
+        completion: @escaping (Result<User, GFNetworkError>) -> Void
+    ) {
+        let endpoint = baseURL + "\(username)"
+
+        guard let url = URL(string: endpoint) else {
+            completion(.failure(.invalidURL))
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+
+            guard error == nil else {
+                completion(.failure(.connectionError))
+                return
+            }
+
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completion(.failure(.invalidResponse))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(.dataError))
+                return
+            }
+
+            do {
+                let user = try self.decodeJSON(data: data, as: User.self)
+                completion(.success(user))
+            } catch {
+                completion(.failure(.jsonError))
+            }
+        }
+        task.resume()
+    }
+
     private func decodeJSON<T: Decodable>(
         data: Data,
         as type: T.Type = T.self,
