@@ -13,5 +13,5 @@ enum GFNetworkError: String, Error {
     case connectionError = "Unable to complete request - check your connection."
     case invalidResponse = "Invalid server response - please try again."
     case dataError = "Unable to read data received from server - please try again."
-    case jsonError = "Failed to data data due to an error."
+    case jsonError = "Failed to read data due to an error."
 }

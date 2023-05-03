@@ -14,6 +14,17 @@ class GFItemInfoVC: UIViewController {
     let rightItemInfoView = GFItemInfoView()
     let actionButton = GFButton()
 
+    var user: User!
+
+    init(user: User) {
+        super.init(nibName: nil, bundle: nil)
+        self.user = user
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,7 +40,7 @@ class GFItemInfoVC: UIViewController {
 
     private func configureStackView() {
         itemsStackView.axis = .horizontal
-        itemsStackView.distribution = .fillEqually
+        itemsStackView.distribution = .equalSpacing
 
         itemsStackView.addArrangedSubview(leftItemInfoView)
         itemsStackView.addArrangedSubview(rightItemInfoView)
@@ -44,13 +55,13 @@ class GFItemInfoVC: UIViewController {
 
         NSLayoutConstraint.activate([
             itemsStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: padding),
-            itemsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -padding),
-            itemsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: padding),
+            itemsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            itemsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             itemsStackView.heightAnchor.constraint(equalToConstant: 50),
 
             actionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -padding),
-            actionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -padding),
-            actionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: padding),
+            actionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            actionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             actionButton.heightAnchor.constraint(equalToConstant: 44)
         ])
     }

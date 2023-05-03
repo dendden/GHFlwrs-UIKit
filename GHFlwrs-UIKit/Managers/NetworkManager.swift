@@ -120,7 +120,7 @@ class NetworkManager {
     private func decodeJSON<T: Decodable>(
         data: Data,
         as type: T.Type = T.self,
-        dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .deferredToDate,
+        dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .iso8601,
         keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .convertFromSnakeCase
     ) throws -> T {
 

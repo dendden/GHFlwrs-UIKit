@@ -14,6 +14,7 @@ class UserInfoVC: UIViewController {
     let headerView = UIView()
     let itemCardViewOne = UIView()
     let itemCardViewTwo = UIView()
+    let dateLabel = GFSubtitleLabel(fontSize: 14, textAlignment: .center)
 
     var childViews: [UIView] = []
 
@@ -28,7 +29,6 @@ class UserInfoVC: UIViewController {
     private func configure() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = false
-        title = username
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem = doneButton
     }
@@ -46,6 +46,9 @@ class UserInfoVC: UIViewController {
             case .success(let user):
                 DispatchQueue.main.async {
                     self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
+                    self.add(childVC: GFRepoItemVC(user: user), to: self.itemCardViewOne)
+                    self.add(childVC: GFFollowerItemVC(user: user), to: self.itemCardViewTwo)
+                    self.dateLabel.text = "GitHub since " + user.createdAt.shortMonthAndYear
                 }
             case .failure(let failure):
                 self.presentGFAlertOnMainThread(title: "Oops.. 🫣", message: failure.rawValue) {
@@ -58,9 +61,9 @@ class UserInfoVC: UIViewController {
     private func layoutUI() {
 
         let padding: CGFloat = 20
-        let itemCardHeightMultiplier = 0.4
+        let itemCardHeightMultiplier = 0.35
 
-        childViews = [headerView, itemCardViewOne, itemCardViewTwo]
+        childViews = [headerView, itemCardViewOne, itemCardViewTwo, dateLabel]
 
         for child in childViews {
             view.addSubview(child)
@@ -71,10 +74,6 @@ class UserInfoVC: UIViewController {
             ])
         }
 
-        headerView.backgroundColor = .systemMint
-        itemCardViewOne.backgroundColor = .systemIndigo
-        itemCardViewTwo.backgroundColor = .systemCyan
-
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             headerView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.55),
@@ -83,7 +82,10 @@ class UserInfoVC: UIViewController {
             itemCardViewOne.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: itemCardHeightMultiplier),
 
             itemCardViewTwo.topAnchor.constraint(equalTo: itemCardViewOne.bottomAnchor, constant: padding),
-            itemCardViewTwo.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: itemCardHeightMultiplier)
+            itemCardViewTwo.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: itemCardHeightMultiplier),
+
+            dateLabel.topAnchor.constraint(equalTo: itemCardViewTwo.bottomAnchor, constant: padding),
+            dateLabel.heightAnchor.constraint(equalToConstant: 18)
         ])
     }
 
