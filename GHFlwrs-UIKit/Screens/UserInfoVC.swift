@@ -12,11 +12,17 @@ class UserInfoVC: UIViewController {
     var username: String!
 
     let headerView = UIView()
+    let itemCardViewOne = UIView()
+    let itemCardViewTwo = UIView()
+
+    var childViews: [UIView] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configure()
+        getUserInfo(for: username)
+        layoutUI()
     }
 
     private func configure() {
@@ -25,9 +31,13 @@ class UserInfoVC: UIViewController {
         title = username
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem = doneButton
+    }
 
-        layoutUI()
+    @objc private func dismissVC() {
+        dismiss(animated: true)
+    }
 
+    private func getUserInfo(for username: String) {
         NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
 
             guard let self = self else { return }
@@ -45,19 +55,35 @@ class UserInfoVC: UIViewController {
         }
     }
 
-    @objc private func dismissVC() {
-        dismiss(animated: true)
-    }
-
     private func layoutUI() {
-        view.addSubview(headerView)
-        headerView.translatesAutoresizingMaskIntoConstraints = false
+
+        let padding: CGFloat = 20
+        let itemCardHeightMultiplier = 0.4
+
+        childViews = [headerView, itemCardViewOne, itemCardViewTwo]
+
+        for child in childViews {
+            view.addSubview(child)
+            child.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                child.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+                child.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding)
+            ])
+        }
+
+        headerView.backgroundColor = .systemMint
+        itemCardViewOne.backgroundColor = .systemIndigo
+        itemCardViewTwo.backgroundColor = .systemCyan
 
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.4)
+            headerView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.55),
+
+            itemCardViewOne.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),
+            itemCardViewOne.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: itemCardHeightMultiplier),
+
+            itemCardViewTwo.topAnchor.constraint(equalTo: itemCardViewOne.bottomAnchor, constant: padding),
+            itemCardViewTwo.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: itemCardHeightMultiplier)
         ])
     }
 
