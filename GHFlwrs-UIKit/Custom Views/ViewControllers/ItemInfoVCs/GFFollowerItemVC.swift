@@ -23,4 +23,8 @@ class GFFollowerItemVC: GFItemInfoVC {
         actionButton.setTitle("Get Followers", for: .normal)
     }
 
+    override func actionButtonTapped() {
+        userInfoDelegate?.didTapGetFollowers(hasFollowers: user.followers > 0)
+    }
+
 }

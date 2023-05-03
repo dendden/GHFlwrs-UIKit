@@ -5,6 +5,7 @@
 //  Created by Денис Трясунов on 26.04.2023.
 //
 
+import SafariServices
 import UIKit
 
 private var containerView: UIView!
@@ -67,5 +68,12 @@ extension UIViewController {
         let emptyStateView = GFEmptyStateView(message: message)
         emptyStateView.frame = view.bounds
         view.addSubview(emptyStateView)
+    }
+
+    func presentSafariVC(with url: URL) {
+        let safariVC = SFSafariViewController(url: url)
+        safariVC.preferredControlTintColor = .systemGreen
+
+        present(safariVC, animated: true)
     }
 }
