@@ -36,6 +36,7 @@ enum PersistenceManager {
                         allBookmarkedUsers.append(bookmark.login)
                     } else {
                         completion(.bookmarkExists)
+                        return
                     }
                 case .remove:
                     updatingBookmarks.removeAll { $0 == bookmark }

@@ -78,7 +78,7 @@ class FollowersListVC: UIViewController {
         let searchController = UISearchController()
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
-        searchController.searchBar.placeholder = "Search username"
+        searchController.searchBar.placeholder = "Filter by username"
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
     }
@@ -160,8 +160,10 @@ class FollowersListVC: UIViewController {
                         self.presentGFAlertOnMainThread(
                             title: "Nailed it 📌",
                             message: "You can now find \(user.login) in ⭐️ Favorites tab.",
-                            buttonTitle: "Sweet"
-                        )
+                            buttonTitle: "Sweet") {
+                                // update bookmark button appearance
+                                self.configureVC()
+                            }
                     }
                 }
             case .failure:
