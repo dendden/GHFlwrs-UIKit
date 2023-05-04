@@ -13,6 +13,17 @@ class FavoritesVC: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemPink
+
+        PersistenceManager.retrieveBookmarks { result in
+            switch result {
+            case .success(let bookmarks):
+                for bookmark in bookmarks {
+                    print(bookmark)
+                }
+            case .failure:
+                break
+            }
+        }
     }
 
 }

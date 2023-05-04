@@ -23,6 +23,8 @@ class FollowersListVC: UIViewController {
     var page = 1
     var userHasMoreFollowersToLoad = true
 
+    var bookmarkImage = UIImage(systemName: "bookmark")
+
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
 
@@ -44,13 +46,22 @@ class FollowersListVC: UIViewController {
     }
 
     private func configureVC() {
-        view.backgroundColor = .systemBackground
+        selectBookmarkImage()
         let bookmarkButton = UIBarButtonItem(
-            barButtonSystemItem: .bookmarks,
+            image: bookmarkImage,
+            style: .plain,
             target: self,
             action: #selector(bookmarkTapped)
         )
         navigationItem.rightBarButtonItem = bookmarkButton
+    }
+
+    private func selectBookmarkImage() {
+        if PersistenceManager.allBookmarkedUsers.contains(username) {
+            bookmarkImage = UIImage(systemName: "bookmark.fill")
+        } else {
+            bookmarkImage = UIImage(systemName: "bookmark")
+        }
     }
 
     private func configureCollectionView() {
@@ -130,6 +141,36 @@ class FollowersListVC: UIViewController {
 
     @objc private func bookmarkTapped() {
 
+        showLoadingProgressView()
+
+        NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
+
+            guard let self = self else { return }
+
+            self.dismissLoadingProgressView()
+
+            switch result {
+            case .success(let user):
+                let bookmark = Follower(login: user.login, avatarUrl: user.avatarUrl)
+                PersistenceManager.updateWith(bookmark, actionType: .add) { [weak self] error in
+                    guard let self = self else { return }
+                    if let error = error {
+                        self.presentGFAlertOnMainThread(title: "Bookmark Error", message: error.rawValue)
+                    } else {
+                        self.presentGFAlertOnMainThread(
+                            title: "Nailed it 📌",
+                            message: "You can now find \(user.login) in ⭐️ Favorites tab.",
+                            buttonTitle: "Sweet"
+                        )
+                    }
+                }
+            case .failure:
+                self.presentGFAlertOnMainThread(
+                    title: "Bookmark Error",
+                    message: "There's a problem retrieving sufficient user info to bookmark 🤷🏻‍♂️"
+                )
+            }
+        }
     }
 }
 
@@ -198,6 +239,7 @@ extension FollowersListVC: FollowersListVCDelegate {
 
         self.username = username
         title = username
+        configureVC()   // this updates bookmark button
         page = 1
         userHasMoreFollowersToLoad  = true
         followers.removeAll()

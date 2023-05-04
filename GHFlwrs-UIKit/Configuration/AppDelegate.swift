@@ -14,7 +14,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        // Override point for customization after application launch.
+
+        PersistenceManager.retrieveBookmarks { result in
+            switch result {
+            case .success(let bookmarks):
+                PersistenceManager.allBookmarkedUsers = bookmarks.map { $0.login }
+            case .failure:
+                fatalError("Unable to establish bookmarks persistence process.")
+            }
+        }
+
         return true
     }
 
