@@ -45,6 +45,12 @@ class FollowersListVC: UIViewController {
 
     private func configureVC() {
         view.backgroundColor = .systemBackground
+        let bookmarkButton = UIBarButtonItem(
+            barButtonSystemItem: .bookmarks,
+            target: self,
+            action: #selector(bookmarkTapped)
+        )
+        navigationItem.rightBarButtonItem = bookmarkButton
     }
 
     private func configureCollectionView() {
@@ -121,6 +127,10 @@ class FollowersListVC: UIViewController {
 
         dataSource.apply(snapshot, animatingDifferences: true)  // might need to dispatch to main if get warnings
     }
+
+    @objc private func bookmarkTapped() {
+
+    }
 }
 
 extension FollowersListVC: UICollectionViewDelegate {
@@ -186,9 +196,9 @@ extension FollowersListVC: FollowersListVCDelegate {
 
     func didRequestFollowersList(for username: String) {
 
-        self.username               = username
-        title                       = username
-        page                        = 1
+        self.username = username
+        title = username
+        page = 1
         userHasMoreFollowersToLoad  = true
         followers.removeAll()
         filteredFollowers.removeAll()

@@ -117,7 +117,7 @@ class NetworkManager {
         task.resume()
     }
 
-    private func decodeJSON<T: Decodable>(
+    public func decodeJSON<T: Decodable>(
         data: Data,
         as type: T.Type = T.self,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .iso8601,
@@ -130,4 +130,5 @@ class NetworkManager {
 
         return try decoder.decode(T.self, from: data)
     }
+
 }

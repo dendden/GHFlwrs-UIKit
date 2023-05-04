@@ -7,12 +7,16 @@
 
 import Foundation
 
-struct Follower: Codable, Hashable {
+struct Follower: Codable, Equatable, Hashable {
 
     let login: String
     let avatarUrl: String   // will be converted from snake_case by KeyDecodingStrategy
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(login)
+    }
+
+    static func == (lhs: Follower, rhs: Follower) -> Bool {
+        lhs.login == rhs.login
     }
 }
