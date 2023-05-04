@@ -46,9 +46,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     /// "Favorites" and `UITabBarItem` set to `.favorites`.
     /// - Returns: A `NavigationController` with `FavoritesVC` set as its root.
     func makeFavoritesNC() -> UINavigationController {
-        let favoritesVC = FavoritesVC()
-        favoritesVC.title = "Favorites"
-        favoritesVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
+        let favoritesVC = BookmarksVC()
+        favoritesVC.title = "Bookmarks"
+        favoritesVC.tabBarItem = UITabBarItem(tabBarSystemItem: .bookmarks, tag: 1)
 
         return UINavigationController(rootViewController: favoritesVC)
     }
