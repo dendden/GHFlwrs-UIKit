@@ -48,9 +48,8 @@ class GFSearchField: UITextField {
         returnKeyType = .go
         clearButtonMode = .whileEditing
 
-        let searchImage = UIImage(systemName: "magnifyingglass")!
         let placeholderString = NSMutableAttributedString()
-        placeholderString.append(NSAttributedString(attachment: NSTextAttachment(image: searchImage)))
+        placeholderString.append(NSAttributedString(attachment: NSTextAttachment(image: SystemImages.search!)))
         placeholderString.append(NSAttributedString(string: " Search username"))
 
         attributedPlaceholder = placeholderString

@@ -13,6 +13,17 @@ enum Images {
     static let emptyStateLogo = UIImage(named: "empty-state-logo")
 }
 
+enum SystemImages {
+    static let location = UIImage(systemName: "mappin.and.ellipse")
+    static let search = UIImage(systemName: "magnifyingglass")
+    static let repos = UIImage(systemName: "folder")
+    static let gists = UIImage(systemName: "text.alignleft")
+    static let followers = UIImage(systemName: "heart")
+    static let following = UIImage(systemName: "person.2")
+    static let bookmarkEmpty = UIImage(systemName: "bookmark")
+    static let bookmarkFill = UIImage(systemName: "bookmark.fill")
+}
+
 enum ScreenSize {
     static var width: CGFloat = 0
     static var height: CGFloat = 0

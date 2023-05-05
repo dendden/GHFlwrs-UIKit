@@ -43,7 +43,7 @@ class GFUserInfoHeaderVC: UIViewController {
         bioLabel.text               = user.bio ?? "*No bio available.*"
         bioLabel.numberOfLines      = 3
         locationLabel.text = user.location ?? "*n/a*"
-        locationImageView.image     = UIImage(systemName: "mappin.and.ellipse")
+        locationImageView.image     = SystemImages.location
         locationImageView.tintColor = .secondaryLabel
     }
 

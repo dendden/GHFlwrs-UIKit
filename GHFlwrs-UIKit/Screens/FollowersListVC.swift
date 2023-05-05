@@ -22,8 +22,9 @@ class FollowersListVC: GFDataLoadingVC {
     var filteredFollowers: [Follower] = []
     var page = 1
     var userHasMoreFollowersToLoad = true
+    var isLoadingMoreFollowers = false
 
-    var bookmarkImage = UIImage(systemName: "bookmark")
+    var bookmarkImage = SystemImages.bookmarkEmpty
 
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
@@ -69,9 +70,9 @@ class FollowersListVC: GFDataLoadingVC {
 
     private func selectBookmarkImage() {
         if PersistenceManager.allBookmarkedUsers.contains(username) {
-            bookmarkImage = UIImage(systemName: "bookmark.fill")
+            bookmarkImage = SystemImages.bookmarkFill
         } else {
-            bookmarkImage = UIImage(systemName: "bookmark")
+            bookmarkImage = SystemImages.bookmarkEmpty
         }
     }
 
@@ -88,10 +89,19 @@ class FollowersListVC: GFDataLoadingVC {
     private func configureSearchController() {
         let searchController = UISearchController()
         searchController.searchResultsUpdater = self
-        searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Filter by username"
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+    }
+
+    private func manageSearchController(remove: Bool) {
+        if remove {
+            navigationItem.searchController = nil
+        } else {
+            if navigationItem.searchController == nil {
+                configureSearchController()
+            }
+        }
     }
 
     private func getFollowers(username: String, page: Int) {
@@ -115,15 +125,19 @@ class FollowersListVC: GFDataLoadingVC {
                     self.followers.append(contentsOf: followers)
                     if self.followers.isEmpty {
                         let message = "This user doesn't have any followers yet. You can be the first! 🥹"
+                        self.manageSearchController(remove: true)
                         self.showEmptyStateView(with: message, in: self.view)
+                    } else {
+                        self.manageSearchController(remove: false)
+                        self.updateData(on: self.followers)
                     }
-                    self.updateData(on: self.followers)
                 }
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "Problem 🤦🏼‍♂️", message: error.rawValue) {
                     self.navigationController?.popViewController(animated: true)
                 }
             }
+            self.isLoadingMoreFollowers = false
         }
     }
 
@@ -194,7 +208,8 @@ extension FollowersListVC: UICollectionViewDelegate {
         let contentHeight = scrollView.contentSize.height
         let screenHeight = scrollView.frame.size.height
 
-        if offset > (contentHeight - screenHeight) && userHasMoreFollowersToLoad {
+        if offset > (contentHeight - screenHeight) && userHasMoreFollowersToLoad && !isLoadingMoreFollowers {
+            isLoadingMoreFollowers = true
             page += 1
             getFollowers(username: username, page: page)
         }
@@ -216,7 +231,7 @@ extension FollowersListVC: UICollectionViewDelegate {
     }
 }
 
-extension FollowersListVC: UISearchResultsUpdating, UISearchBarDelegate {
+extension FollowersListVC: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
         guard let filter = searchController.searchBar.text
@@ -238,11 +253,6 @@ extension FollowersListVC: UISearchResultsUpdating, UISearchBarDelegate {
         }
 
         updateData(on: filteredFollowers)
-    }
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        filteredFollowers.removeAll()
-        updateData(on: followers)
     }
 }
 

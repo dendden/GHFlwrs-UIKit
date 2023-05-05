@@ -150,7 +150,7 @@ class NetworkManager {
 
             guard
                 let self = self,
-                error != nil,
+                error == nil,
                 let response = response as? HTTPURLResponse,
                 response.statusCode == 200,
                 let data = data,
