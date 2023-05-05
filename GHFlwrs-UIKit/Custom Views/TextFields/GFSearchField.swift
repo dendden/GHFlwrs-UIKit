@@ -46,6 +46,7 @@ class GFSearchField: UITextField {
         autocapitalizationType = .none
 
         returnKeyType = .go
+        clearButtonMode = .whileEditing
 
         let searchImage = UIImage(systemName: "magnifyingglass")!
         let placeholderString = NSMutableAttributedString()

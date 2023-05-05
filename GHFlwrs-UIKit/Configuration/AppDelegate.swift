@@ -15,14 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
 
-        PersistenceManager.retrieveBookmarks { result in
-            switch result {
-            case .success(let bookmarks):
-                PersistenceManager.allBookmarkedUsers = bookmarks.map { $0.login }
-            case .failure:
-                fatalError("Unable to establish bookmarks persistence process.")
-            }
-        }
+        getAllBookmarkedUsers()
 
         return true
     }
@@ -44,6 +37,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running,
         // this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+    }
+
+    private func getAllBookmarkedUsers() {
+
+        PersistenceManager.retrieveBookmarks { result in
+            switch result {
+            case .success(let bookmarks):
+                PersistenceManager.allBookmarkedUsers = bookmarks.map { $0.login }
+            case .failure:
+                fatalError("Unable to establish bookmarks persistence process.")
+            }
+        }
     }
 
 }

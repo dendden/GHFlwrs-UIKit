@@ -83,9 +83,7 @@ extension BookmarksVC: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let bookmark = bookmarks[indexPath.row]
-        let destinationVC = FollowersListVC()
-        destinationVC.username = bookmark.login
-        destinationVC.title = bookmark.login
+        let destinationVC = FollowersListVC(username: bookmark.login)
 
         navigationController?.pushViewController(destinationVC, animated: true)
     }

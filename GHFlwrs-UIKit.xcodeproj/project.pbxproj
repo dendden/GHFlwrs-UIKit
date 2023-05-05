@@ -16,6 +16,7 @@
 		082ACF762A03991200A2DEFD /* FileManager+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082ACF752A03991200A2DEFD /* FileManager+Ext.swift */; };
 		082ACF782A03A9A700A2DEFD /* GFPersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082ACF772A03A9A700A2DEFD /* GFPersistenceError.swift */; };
 		082ACF802A04288700A2DEFD /* BookmarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082ACF7F2A04288700A2DEFD /* BookmarkCell.swift */; };
+		082ACF872A05081F00A2DEFD /* GFTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082ACF862A05081F00A2DEFD /* GFTabBarController.swift */; };
 		08DA076029FE3DC30095A194 /* Follower.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DA075F29FE3DC30095A194 /* Follower.swift */; };
 		08DA076229FE3EEB0095A194 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DA076129FE3EEB0095A194 /* User.swift */; };
 		08DA076529FE59540095A194 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DA076429FE59540095A194 /* NetworkManager.swift */; };
@@ -55,6 +56,7 @@
 		082ACF752A03991200A2DEFD /* FileManager+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Ext.swift"; sourceTree = "<group>"; };
 		082ACF772A03A9A700A2DEFD /* GFPersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFPersistenceError.swift; sourceTree = "<group>"; };
 		082ACF7F2A04288700A2DEFD /* BookmarkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkCell.swift; sourceTree = "<group>"; };
+		082ACF862A05081F00A2DEFD /* GFTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFTabBarController.swift; sourceTree = "<group>"; };
 		08DA075F29FE3DC30095A194 /* Follower.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Follower.swift; sourceTree = "<group>"; };
 		08DA076129FE3EEB0095A194 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		08DA076429FE59540095A194 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				08F3586D29F9966B0058845D /* GFAlertVC.swift */,
 				08DA07932A0147850095A194 /* GFUserInfoHeaderVC.swift */,
 				082ACF682A0269CE00A2DEFD /* ItemInfoVCs */,
+				082ACF862A05081F00A2DEFD /* GFTabBarController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 				08F3586A29F992DB0058845D /* GFTitleLabel.swift in Sources */,
 				082ACF6C2A02797300A2DEFD /* String+Ext.swift in Sources */,
 				08F3585029F841D40058845D /* SearchVC.swift in Sources */,
+				082ACF872A05081F00A2DEFD /* GFTabBarController.swift in Sources */,
 				082ACF5D2A024C6E00A2DEFD /* GFItemInfoVC.swift in Sources */,
 				082ACF672A0268C500A2DEFD /* GFFollowerItemVC.swift in Sources */,
 				082ACF802A04288700A2DEFD /* BookmarkCell.swift in Sources */,
