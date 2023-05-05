@@ -19,13 +19,11 @@ class GFSubtitleLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(fontSize: CGFloat, textAlignment: NSTextAlignment = .left) {
-        super.init(frame: .zero)
+    convenience init(fontSize: CGFloat, textAlignment: NSTextAlignment = .left) {
+        self.init(frame: .zero)
 
         self.textAlignment = textAlignment
         self.font = UIFont.systemFont(ofSize: fontSize, weight: .medium)
-
-        configure()
     }
 
     private func configure() {

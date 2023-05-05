@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BookmarksVC: UIViewController {
+class BookmarksVC: GFDataLoadingVC {
 
     var bookmarks: [Follower] = []
 

@@ -26,17 +26,15 @@ class GFButton: UIButton {
     }
 
     /// Initializes `GFButton` with given background color and
-    /// title, then calls its `configure()` method.
+    /// title.
     /// - Parameters:
     ///   - buttonColor: A background color for `GFButton`.
     ///   - title: A title for `GFButton`.
-    init(buttonColor: UIColor, title: String) {
-        super.init(frame: .zero)
+    convenience init(buttonColor: UIColor, title: String) {
+        self.init(frame: .zero)
 
         self.backgroundColor = buttonColor
         self.setTitle(title, for: .normal)
-
-        configure()
     }
 
     private func configure() {
