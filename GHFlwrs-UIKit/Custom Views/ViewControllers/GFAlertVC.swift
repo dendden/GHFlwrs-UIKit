@@ -36,6 +36,7 @@ class GFAlertVC: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .black.withAlphaComponent(0.75)
+        view.addSubviews(container, titleLabel, messageLabel, actionButton)
 
         configureContainerView()
         configureTitleLabel()
@@ -48,8 +49,6 @@ class GFAlertVC: UIViewController {
     }
 
     func configureContainerView() {
-        view.addSubview(container)
-
         NSLayoutConstraint.activate([
             container.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -59,8 +58,6 @@ class GFAlertVC: UIViewController {
     }
 
     func configureTitleLabel() {
-        container.addSubview(titleLabel)
-
         titleLabel.text = alertTitle ?? "Alert [No Title]"
 
         NSLayoutConstraint.activate([
@@ -72,8 +69,6 @@ class GFAlertVC: UIViewController {
     }
 
     func configureActionButton() {
-        container.addSubview(actionButton)
-
         actionButton.setTitle(buttonTitle ?? "OK", for: .normal)
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
 
@@ -93,8 +88,6 @@ class GFAlertVC: UIViewController {
     }
 
     func configureMessageLabel() {
-        container.addSubview(messageLabel)
-
         messageLabel.text = alertMessage ?? "[Alert details n/a]"
         messageLabel.numberOfLines = 4
 

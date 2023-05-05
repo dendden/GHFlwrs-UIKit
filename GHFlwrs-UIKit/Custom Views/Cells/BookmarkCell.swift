@@ -30,8 +30,7 @@ class BookmarkCell: UITableViewCell {
     }
 
     private func configure() {
-        contentView.addSubview(avatarImageView)
-        contentView.addSubview(usernameLabel)
+        contentView.addSubviews(avatarImageView, usernameLabel)
 
         accessoryType = .disclosureIndicator
 

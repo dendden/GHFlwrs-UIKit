@@ -8,14 +8,13 @@
 import UIKit
 
 protocol UserInfoVCDelegate: AnyObject {
-    func didTapGitHubAccount(with urlString: String)
-    func didTapGetFollowers(hasFollowers: Bool)
+    func didRequestFollowersList(for username: String)
 }
 
 class UserInfoVC: UIViewController {
 
     var username: String!
-    weak var followersListDelegate: FollowersListVCDelegate?
+    weak var userInfoDelegate: UserInfoVCDelegate?
 
     let headerView = UIView()
     let itemCardViewOne = UIView()
@@ -63,11 +62,8 @@ class UserInfoVC: UIViewController {
 
     private func configureUIElementsWith(user: User) {
 
-        let repoItemVC = GFRepoItemVC(user: user)
-        repoItemVC.userInfoDelegate = self
-
-        let followerItemVC = GFFollowerItemVC(user: user)
-        followerItemVC.userInfoDelegate = self
+        let repoItemVC = GFRepoItemVC(user: user, delegate: self)
+        let followerItemVC = GFFollowerItemVC(user: user, delegate: self)
 
         self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
         self.add(childVC: repoItemVC, to: self.itemCardViewOne)
@@ -102,7 +98,7 @@ class UserInfoVC: UIViewController {
             itemCardViewTwo.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: itemCardHeightMultiplier),
 
             dateLabel.topAnchor.constraint(equalTo: itemCardViewTwo.bottomAnchor, constant: padding),
-            dateLabel.heightAnchor.constraint(equalToConstant: 18)
+            dateLabel.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 
@@ -114,7 +110,7 @@ class UserInfoVC: UIViewController {
     }
 }
 
-extension UserInfoVC: UserInfoVCDelegate {
+extension UserInfoVC: GFRepoItemVCDelegate, GFFollowerItemVCDelegate {
 
     func didTapGitHubAccount(with urlString: String) {
 
@@ -138,7 +134,7 @@ extension UserInfoVC: UserInfoVCDelegate {
             )
             return
         }
-        followersListDelegate?.didRequestFollowersList(for: username)
+        userInfoDelegate?.didRequestFollowersList(for: username)
         dismiss(animated: true)
     }
 

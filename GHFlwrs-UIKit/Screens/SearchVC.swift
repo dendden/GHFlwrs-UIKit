@@ -25,6 +25,7 @@ class SearchVC: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
+        view.addSubviews(logoImageView, usernameSearchField, searchButton)
 
         configureLogoImageView()
         configureSearchField()
@@ -68,7 +69,6 @@ class SearchVC: UIViewController {
     /// Adds `logoImageView` to parent view, assigns the image and activates
     /// layout constraints.
     func configureLogoImageView() {
-        view.addSubview(logoImageView)
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         logoImageView.image = Images.ghLogo
 
@@ -97,7 +97,6 @@ class SearchVC: UIViewController {
     }
 
     func configureSearchField() {
-        view.addSubview(usernameSearchField)
         // listen for Return key hit to perform action:
         usernameSearchField.delegate = self
 
@@ -110,7 +109,6 @@ class SearchVC: UIViewController {
     }
 
     func configureSearchButton() {
-        view.addSubview(searchButton)
         searchButton.addTarget(self, action: #selector(pushFollowersListVC), for: .touchUpInside)
 
         NSLayoutConstraint.activate([

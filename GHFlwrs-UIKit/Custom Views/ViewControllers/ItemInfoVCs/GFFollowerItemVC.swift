@@ -7,8 +7,24 @@
 
 import UIKit
 
+protocol GFFollowerItemVCDelegate: AnyObject {
+    func didTapGetFollowers(hasFollowers: Bool)
+}
+
 class GFFollowerItemVC: GFItemInfoVC {
 
+    weak var followerDelegate: GFFollowerItemVCDelegate?
+
+    init(user: User, delegate: GFFollowerItemVCDelegate) {
+        super.init(user: user)
+
+        followerDelegate = delegate
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,7 +40,7 @@ class GFFollowerItemVC: GFItemInfoVC {
     }
 
     override func actionButtonTapped() {
-        userInfoDelegate?.didTapGetFollowers(hasFollowers: user.followers > 0)
+        followerDelegate?.didTapGetFollowers(hasFollowers: user.followers > 0)
     }
 
 }

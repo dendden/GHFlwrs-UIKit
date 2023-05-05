@@ -7,7 +7,23 @@
 
 import UIKit
 
+protocol GFRepoItemVCDelegate: AnyObject {
+    func didTapGitHubAccount(with urlString: String)
+}
+
 class GFRepoItemVC: GFItemInfoVC {
+
+    weak var repoDelegate: GFRepoItemVCDelegate?
+
+    init(user: User, delegate: GFRepoItemVCDelegate) {
+        super.init(user: user)
+
+        repoDelegate = delegate
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +40,6 @@ class GFRepoItemVC: GFItemInfoVC {
     }
 
     override func actionButtonTapped() {
-        userInfoDelegate?.didTapGitHubAccount(with: user.htmlUrl)
+        repoDelegate?.didTapGitHubAccount(with: user.htmlUrl)
     }
 }
