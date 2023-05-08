@@ -55,8 +55,7 @@ class GFFollowerItemVC: GFItemInfoVC {
         leftItemInfoView.setType(.followers, withCount: user.followers)
         rightItemInfoView.setType(.following, withCount: user.following)
 
-        actionButton.backgroundColor = .systemGreen
-        actionButton.setTitle("Get Followers", for: .normal)
+        actionButton.set(color: .systemGreen, title: "Get Followers", systemImage: SystemImages.profileFollowers)
     }
 
     /// Triggers the ``GFFollowerItemVCDelegate``.

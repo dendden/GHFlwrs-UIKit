@@ -55,8 +55,7 @@ class GFRepoItemVC: GFItemInfoVC {
         leftItemInfoView.setType(.repos, withCount: user.publicRepos)
         rightItemInfoView.setType(.gists, withCount: user.publicGists)
 
-        actionButton.backgroundColor = .systemIndigo
-        actionButton.setTitle("GitHub Profile", for: .normal)
+        actionButton.set(color: .systemIndigo, title: "GitHub Profile", systemImage: SystemImages.profile)
     }
 
     /// Triggers the ``GFRepoItemVCDelegate``.``GFRepoItemVCDelegate/didTapGitHubAccount(with:)`` method.

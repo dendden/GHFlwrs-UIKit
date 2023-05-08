@@ -34,7 +34,7 @@ class GFAlertVC: UIViewController {
     let messageLabel = GFBodyLabel(textAlignment: .center)
 
     /// Alert button with `.systemPink` color and default title of "OK".
-    let actionButton = GFButton(buttonColor: .systemPink, title: "OK")
+    let actionButton = GFButton(color: .systemPink, title: "OK")
 
     // MARK: -
     /// Creates an instance of  ``GFAlertVC``.

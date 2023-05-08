@@ -19,10 +19,6 @@ class GFTabBarController: UITabBarController {
     /// calls ``configureNavigationBar()`` method and adds `Search` and `Favorites`
     /// navigation controllers by calling their corresponding `make()` methods..
     private func configureTabBar() {
-        let appearance = UITabBarAppearance()
-        appearance.configureWithDefaultBackground()
-        UITabBar.appearance().standardAppearance = appearance
-        UITabBar.appearance().scrollEdgeAppearance = appearance
         UITabBar.appearance().tintColor = .systemGreen
 
         configureNavigationBar()
@@ -33,10 +29,6 @@ class GFTabBarController: UITabBarController {
     /// Configures the app's `NavigationBar` with `default background` appearance,
     /// tint color of `systemGreen` and preferred large titles.
     private func configureNavigationBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithDefaultBackground()
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
         UINavigationBar.appearance().prefersLargeTitles = true
         UINavigationBar.appearance().tintColor = .systemGreen
     }

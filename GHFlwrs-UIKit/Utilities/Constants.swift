@@ -26,6 +26,8 @@ enum SystemImages {
     static let following = UIImage(systemName: "person.2")
     static let bookmarkEmpty = UIImage(systemName: "bookmark")
     static let bookmarkFill = UIImage(systemName: "bookmark.fill")
+    static let profile = UIImage(systemName: "person")
+    static let profileFollowers = UIImage(systemName: "person.3")
 }
 
 /// Reference values for `width` and `height` of current `Window`.

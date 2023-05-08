@@ -30,19 +30,33 @@ class GFButton: UIButton {
     /// - Parameters:
     ///   - buttonColor: A background color for `GFButton`.
     ///   - title: A title for `GFButton`.
-    convenience init(buttonColor: UIColor, title: String) {
+    convenience init(color: UIColor, title: String) {
         self.init(frame: .zero)
 
-        self.backgroundColor = buttonColor
-        self.setTitle(title, for: .normal)
+        set(color: color, title: title)
     }
 
     private func configure() {
-        layer.cornerRadius = 10
-        setTitleColor(.white, for: .normal)
-        titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+        configuration = .filled()
+        configuration?.cornerStyle = .medium
+
         // constraints will be configured programmatically with AutoLayout:
         translatesAutoresizingMaskIntoConstraints = false
     }
 
+    /// Sets base color and title for button configuration.
+    /// - Parameters:
+    ///   - color: A color for button background and foreground.
+    ///   - title: A title text for button.
+    ///   - systemImage: An `SFSymbol` image to place on the left of button title.
+    final func set(color: UIColor, title: String, systemImage: UIImage? = nil) {
+        configuration?.baseBackgroundColor = color
+        configuration?.baseForegroundColor = .white
+
+        configuration?.title = title
+
+        configuration?.image = systemImage
+        configuration?.imagePadding = 6
+        configuration?.imagePlacement = .leading
+    }
 }

@@ -14,7 +14,7 @@ class SearchVC: UIViewController {
 
     let logoImageView = UIImageView()
     let usernameSearchField = GFSearchField()
-    let searchButton = GFButton(buttonColor: .systemGreen, title: "Get Followers")
+    let searchButton = GFButton(color: .systemGreen, title: "Get Followers")
 
     /// A variable that checks whether any characters except white spaces were
     /// entered into the search field.
