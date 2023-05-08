@@ -76,7 +76,7 @@ class UserInfoVC: UIViewController {
                     self.configureUIElementsWith(user: user)
                 }
             case .failure(let failure):
-                self.presentGFAlertOnMainThread(title: "Oops.. 🫣", message: failure.rawValue) {
+                self.presentGFAlert(title: "Oops.. 🫣", message: failure.rawValue) {
                     self.dismiss(animated: true)
                 }
             }
@@ -149,7 +149,7 @@ extension UserInfoVC: GFRepoItemVCDelegate, GFFollowerItemVCDelegate {
     func didTapGitHubAccount(with urlString: String) {
 
         guard let url = URL(string: urlString) else {
-            presentGFAlertOnMainThread(
+            presentGFAlert(
                 title: "Broken link 🤬",
                 message: "It looks like the link to \(username!)'s profile on GitHub is invalid."
             )
@@ -161,7 +161,7 @@ extension UserInfoVC: GFRepoItemVCDelegate, GFFollowerItemVCDelegate {
 
     func didTapGetFollowers(hasFollowers: Bool) {
         guard hasFollowers else {
-            presentGFAlertOnMainThread(
+            presentGFAlert(
                 title: "Zero means zero",
                 message: "We can't be bothered to refresh the UI for 0 followers, sorry! 😤",
                 buttonTitle: "Sad but true"

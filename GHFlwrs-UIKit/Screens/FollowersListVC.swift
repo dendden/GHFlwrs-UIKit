@@ -156,12 +156,19 @@ class FollowersListVC: GFDataLoadingVC {
     private func getFollowers(username: String, page: Int) {
 
         showLoadingProgressView()
-
-        NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
-
-            guard let self = self else {
-                return
+        Task {
+            do {
+                try await requestFollowers(username: username, page: page)
+            } catch {
+                presentNetworkError(error)
             }
+            isLoadingMoreFollowers = false
+        }
+
+        /* Old way of performing network call (with completion handler + Result type): */
+        /*NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
+
+            guard let self = self else { return }
 
             self.dismissLoadingProgressView()
 
@@ -177,7 +184,15 @@ class FollowersListVC: GFDataLoadingVC {
                 }
             }
             self.isLoadingMoreFollowers = false
-        }
+        } */
+    }
+
+    /// Calls the ``NetworkManager``.``NetworkManager/getFollowers(for:page:)``
+    /// method and updates UI with if request was successful.
+    private func requestFollowers(username: String, page: Int) async throws {
+        let fetchedFollowers = try await NetworkManager.shared.getFollowers(for: username, page: page)
+        updateUI(with: fetchedFollowers)
+        dismissLoadingProgressView()
     }
 
     /// Accepts new array of followers from a network call and appends it
@@ -185,16 +200,36 @@ class FollowersListVC: GFDataLoadingVC {
     /// whether ``followers`` array is empty or not.
     /// - Parameter followers: A new array of followers to append to
     /// existing array.
-    private func updateUIOnMainThread(with followers: [Follower]) {
+    private func updateUI(with followers: [Follower]) {
+        if followers.count < NetworkManager.shared.followersPerPage {
+            userHasMoreFollowersToLoad = false
+        }
         self.followers.append(contentsOf: followers)
-        DispatchQueue.main.async {
-            if self.followers.isEmpty {
-                let message = "This user doesn't have any followers yet. You can be the first! 🥹"
-                self.manageSearchController(remove: true)
-                self.showEmptyStateView(with: message, in: self.view)
-            } else {
-                self.manageSearchController(remove: false)
-                self.updateData(on: self.followers)
+        if self.followers.isEmpty {
+            let message = "This user doesn't have any followers yet. You can be the first! 🥹"
+            manageSearchController(remove: true)
+            showEmptyStateView(with: message, in: self.view)
+        } else {
+            manageSearchController(remove: false)
+            updateData(on: self.followers)
+        }
+    }
+
+    /// Presents a ``GFAlertVC`` with error description to user.
+    /// - Parameter error: Error which must be presented to user.
+    private func presentNetworkError(_ error: Error) {
+        dismissLoadingProgressView()
+        if let networkError = error as? GFNetworkError {
+            presentGFAlert(title: "Problem 🤦🏼‍♂️", message: networkError.rawValue) {
+                if self.followers.isEmpty {
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
+        } else {
+            presentGenericError {
+                if self.followers.isEmpty {
+                    self.navigationController?.popViewController(animated: true)
+                }
             }
         }
     }
@@ -223,7 +258,7 @@ class FollowersListVC: GFDataLoadingVC {
         snapshot.appendSections([.main])
         snapshot.appendItems(followers)
 
-        dataSource.apply(snapshot, animatingDifferences: true)  // might need to dispatch to main if get warnings
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
 
     /// Fetches user info with ``NetworkManager``.``NetworkManager/getUserInfo(for:completion:)``
@@ -247,7 +282,7 @@ class FollowersListVC: GFDataLoadingVC {
             case .success(let user):
                 self.bookmarkUser(user)
             case .failure:
-                self.presentGFAlertOnMainThread(
+                self.presentGFAlert(
                     title: "Bookmark Error",
                     message: "There's a problem retrieving sufficient user info to bookmark 🤷🏻‍♂️"
                 )
@@ -264,9 +299,9 @@ class FollowersListVC: GFDataLoadingVC {
         PersistenceManager.updateWith(bookmark, actionType: .add) { [weak self] error in
             guard let self = self else { return }
             if let error = error {
-                self.presentGFAlertOnMainThread(title: "Bookmark Error", message: error.rawValue)
+                self.presentGFAlert(title: "Bookmark Error", message: error.rawValue)
             } else {
-                self.presentGFAlertOnMainThread(
+                self.presentGFAlert(
                     title: "Nailed it 📌",
                     message: "You can now find \(user.login) in 📖 Bookmarks tab.",
                     buttonTitle: "Sweet") {

@@ -47,10 +47,8 @@ class GFDataLoadingVC: UIViewController {
     /// Removes the progress loading view from its superview on **main thread**.
     func dismissLoadingProgressView() {
         // Always gets called from background threads - so dispatch to main
-        DispatchQueue.main.async {
-            self.containerView.removeFromSuperview()
-            self.containerView = nil
-        }
+        self.containerView.removeFromSuperview()
+        self.containerView = nil
     }
 
     /// Adds an ``GFEmptyStateView`` to the top of view hierarchy, pinned

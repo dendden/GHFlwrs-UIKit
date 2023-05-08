@@ -17,25 +17,46 @@ extension UIViewController {
     ///   - buttonTitle: A title for alert button. Default value is **"OK"**.
     ///   - completion: Optional completion handler to run when alert is dismissed.
     ///   Default value is **nil**.
-    func presentGFAlertOnMainThread(
+    func presentGFAlert(
         title: String,
         message: String,
         buttonTitle: String = "OK",
         completion: (() -> Void)? = nil
     ) {
 
-        DispatchQueue.main.async {
-            let alertVC = GFAlertVC(
-                alertTitle: title,
-                alertMessage: message,
-                buttonTitle: buttonTitle,
-                completion: completion
-            )
-            alertVC.modalPresentationStyle = .overFullScreen
-            alertVC.modalTransitionStyle = .crossDissolve
+        let alertVC = GFAlertVC(
+            alertTitle: title,
+            alertMessage: message,
+            buttonTitle: buttonTitle,
+            completion: completion
+        )
+        alertVC.modalPresentationStyle = .overFullScreen
+        alertVC.modalTransitionStyle = .crossDissolve
 
-            self.present(alertVC, animated: true)
-        }
+        present(alertVC, animated: true)
+    }
+
+    /// Presents custom ``GFAlertVC`` alert, dispatched on main thread.
+    /// - Parameters:
+    ///   - title: Alert title.
+    ///   - message: A message that alert conveys.
+    ///   - buttonTitle: A title for alert button. Default value is **"OK"**.
+    ///   - completion: Optional completion handler to run when alert is dismissed.
+    ///   Default value is **nil**.
+    func presentGenericError(
+        completion: (() -> Void)? = nil
+    ) {
+
+        let alertVC = GFAlertVC(
+            alertTitle: "Something went wrong",
+            alertMessage: "An unexpected error came across our path, thy shall not fear and loose the faith!",
+            buttonTitle: "Oi!",
+            completion: completion
+        )
+        alertVC.modalPresentationStyle = .overFullScreen
+        alertVC.modalTransitionStyle = .crossDissolve
+
+        present(alertVC, animated: true)
     }
 
     /// Displays a full-screen Safari ViewController with contents specified in URL.

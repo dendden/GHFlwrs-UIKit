@@ -20,9 +20,15 @@ class NetworkManager {
     /// A key-value cache for user avatar images keyed by their string `URL` addresses.
     let cache = NSCache<NSString, UIImage>()
 
+    let decoder: JSONDecoder
+
     // important to have private init(), so that only class itself
     // can instantiate the singleton
-    private init() {}
+    private init() {
+        decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+    }
 
     /// Executes the task of fetching followers JSON data and
     /// interpreting that data into an array of `Follower`s
@@ -131,7 +137,7 @@ class NetworkManager {
     ///   - keyDecodingStrategy: Decoding strategy for decoding parameter keys in `JSON`.
     ///   Default value is **.convertFromSnakeCase**.
     /// - Returns: Decoded data of the specified type.
-    private func decodeJSON<T: Decodable>(
+    func decodeJSON<T: Decodable>(
         data: Data,
         as type: T.Type = T.self,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .iso8601,

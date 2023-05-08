@@ -62,7 +62,7 @@ class SearchVC: UIViewController {
         view.endEditing(true)   // dismiss keyboard
 
         guard isUsernameEntered else {
-            presentGFAlertOnMainThread(
+            presentGFAlert(
                 title: "Username No-No",
                 message: "Looks like you forgot to input anything except emptiness in that search field 🥺."
             )
