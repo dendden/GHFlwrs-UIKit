@@ -7,24 +7,58 @@
 
 import UIKit
 
+/// A `ViewController` that performs a network request to get
+/// user's followers and displays them in a `UICollectionView`.
+///
+/// In `UICollectionView`, each follower is presented in a ``FollowerCell``.
+/// If request returns an empty list, this controller displays an empty state view.
+/// If network request fails, this controller presents a ``GFAlertVC`` and
+/// dismisses itself from `NavigationController`, returning to ``SearchVC``.
 class FollowersListVC: GFDataLoadingVC {
 
     enum Section {
         case main
     }
 
+    // MARK: - Class variables
+
+    /// A username of user, whose followers must be displayed.
     var username: String!
+
+    /// All currently loaded users.
     var followers: [Follower] = []
+
+    /// Followers that match filter in `SearchController`.
     var filteredFollowers: [Follower] = []
+
+    /// The page of results returned from network request.
+    ///
+    /// Number of results per page is defined in ``NetworkManager``.``NetworkManager/followersPerPage``.
     var page = 1
+
+    /// An indicator for whether more pages of followers can be loaded for user.
+    ///
+    /// If network request for current ``page`` returns less than ``NetworkManager/followersPerPage``
+    /// followers, this indicator is set to false, otherwise stays true.
     var userHasMoreFollowersToLoad = true
+
+    /// An indicator of ongoing network request.
+    ///
+    /// This indicator prevents multiple calls to ``NetworkManager`` for incrementing ``page`` values
+    /// if user hits bottom of `UICollectionView` and pulls multiple times to load more followers.
     var isLoadingMoreFollowers = false
 
-    var bookmarkImage = SystemImages.bookmarkEmpty
+    // MARK: - View variables
 
+    /// An image for `bookmark` toolbar button.
+    var bookmarkImage = SystemImages.bookmarkEmpty
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
 
+    // MARK: -
+    /// Creates an instance of ``FollowersListVC``.
+    /// - Parameter username: A username for user, whose followers must be
+    /// displayed
     init(username: String) {
         super.init(nibName: nil, bundle: nil)
 
@@ -53,6 +87,7 @@ class FollowersListVC: GFDataLoadingVC {
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
 
+    /// Configures and adds bookmark button to the navigation toolbar.
     private func configureVC() {
         selectBookmarkImage()
         let bookmarkButton = UIBarButtonItem(
@@ -64,6 +99,8 @@ class FollowersListVC: GFDataLoadingVC {
         navigationItem.rightBarButtonItem = bookmarkButton
     }
 
+    /// Checks ``username`` against the ``PersistenceManager``.``PersistenceManager/allBookmarkedUsers``
+    /// array of usernames and sets bookmark image that corresponds to user's bookmarked status.
     private func selectBookmarkImage() {
         if PersistenceManager.allBookmarkedUsers.contains(username) {
             bookmarkImage = SystemImages.bookmarkFill
@@ -72,6 +109,8 @@ class FollowersListVC: GFDataLoadingVC {
         }
     }
 
+    /// Sets a 3-column `FlowLayout` for the collection view, adds it as a subview, sets `self`
+    /// for the delegate and registers ``FollowerCell``.
     private func configureCollectionView() {
         collectionView = UICollectionView(
             frame: view.bounds,
@@ -90,6 +129,12 @@ class FollowersListVC: GFDataLoadingVC {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
 
+    /// Removes or re-instates the `searchController` from `navigationItem`.
+    ///
+    /// This method is called from the result of network call for followers - if followers list
+    /// is empty, `searchController` is hidden, else returned.
+    /// - Parameter remove: Indicator whether `searchController` must be
+    /// removed from `navigationItem`.
     private func manageSearchController(remove: Bool) {
         if remove {
             navigationItem.searchController = nil
@@ -100,6 +145,14 @@ class FollowersListVC: GFDataLoadingVC {
         }
     }
 
+    /// Performs a network call with ``NetworkManager``.``NetworkManager/getFollowers(for:page:completion:)``
+    /// method.
+    ///
+    /// This method also shows `ProgressLoadingView` prior to network call and hides it once
+    /// the call returns a result.
+    /// - Parameters:
+    ///   - username: A username of user, whose followers must be retrieved via a network request.
+    ///   - page: The page for fetch results.
     private func getFollowers(username: String, page: Int) {
 
         showLoadingProgressView()
@@ -117,17 +170,7 @@ class FollowersListVC: GFDataLoadingVC {
                 if followers.count < NetworkManager.shared.followersPerPage {
                     self.userHasMoreFollowersToLoad = false
                 }
-                DispatchQueue.main.async {
-                    self.followers.append(contentsOf: followers)
-                    if self.followers.isEmpty {
-                        let message = "This user doesn't have any followers yet. You can be the first! 🥹"
-                        self.manageSearchController(remove: true)
-                        self.showEmptyStateView(with: message, in: self.view)
-                    } else {
-                        self.manageSearchController(remove: false)
-                        self.updateData(on: self.followers)
-                    }
-                }
+                self.updateUIOnMainThread(with: followers)
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "Problem 🤦🏼‍♂️", message: error.rawValue) {
                     self.navigationController?.popViewController(animated: true)
@@ -137,6 +180,29 @@ class FollowersListVC: GFDataLoadingVC {
         }
     }
 
+    /// Accepts new array of followers from a network call and appends it
+    /// to own ``followers`` array, then updates UI depending on
+    /// whether ``followers`` array is empty or not.
+    /// - Parameter followers: A new array of followers to append to
+    /// existing array.
+    private func updateUIOnMainThread(with followers: [Follower]) {
+        self.followers.append(contentsOf: followers)
+        DispatchQueue.main.async {
+            if self.followers.isEmpty {
+                let message = "This user doesn't have any followers yet. You can be the first! 🥹"
+                self.manageSearchController(remove: true)
+                self.showEmptyStateView(with: message, in: self.view)
+            } else {
+                self.manageSearchController(remove: false)
+                self.updateData(on: self.followers)
+            }
+        }
+    }
+
+    /// Configures the `UICollectionViewDiffableDataSource` by calling
+    /// `.dequeueReusableCell(withReuseIdentifier:)` and assigning
+    /// ``Follower`` to the ``FollowerCell`` with its ``FollowerCell/set(follower:)``
+    /// method.
     private func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource(
             collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
@@ -160,6 +226,13 @@ class FollowersListVC: GFDataLoadingVC {
         dataSource.apply(snapshot, animatingDifferences: true)  // might need to dispatch to main if get warnings
     }
 
+    /// Fetches user info with ``NetworkManager``.``NetworkManager/getUserInfo(for:completion:)``
+    /// method and calls ``PersistenceManager``.``PersistenceManager/updateWith(_:actionType:completion:)``
+    /// to check for user's bookmarked status and add this user to bookmarks or show alert
+    /// informing that current user is already bookmarked.
+    ///
+    /// This method also  shows `ProgressLoadingView` prior to network call and hides it once
+    /// the call returns a result.
     @objc private func bookmarkTapped() {
 
         showLoadingProgressView()
@@ -172,21 +245,7 @@ class FollowersListVC: GFDataLoadingVC {
 
             switch result {
             case .success(let user):
-                let bookmark = Follower(login: user.login, avatarUrl: user.avatarUrl)
-                PersistenceManager.updateWith(bookmark, actionType: .add) { [weak self] error in
-                    guard let self = self else { return }
-                    if let error = error {
-                        self.presentGFAlertOnMainThread(title: "Bookmark Error", message: error.rawValue)
-                    } else {
-                        self.presentGFAlertOnMainThread(
-                            title: "Nailed it 📌",
-                            message: "You can now find \(user.login) in ⭐️ Favorites tab.",
-                            buttonTitle: "Sweet") {
-                                // update bookmark button appearance
-                                self.configureVC()
-                            }
-                    }
-                }
+                self.bookmarkUser(user)
             case .failure:
                 self.presentGFAlertOnMainThread(
                     title: "Bookmark Error",
@@ -195,7 +254,30 @@ class FollowersListVC: GFDataLoadingVC {
             }
         }
     }
+
+    /// Creates a ``Follower`` object from provided user and calls
+    /// ``PersistenceManager``.``PersistenceManager/updateWith(_:actionType:completion:)``
+    /// method to try and add this user to bookmarked.
+    /// - Parameter user: A user who should be bookmarked.
+    private func bookmarkUser(_ user: User) {
+        let bookmark = Follower(login: user.login, avatarUrl: user.avatarUrl)
+        PersistenceManager.updateWith(bookmark, actionType: .add) { [weak self] error in
+            guard let self = self else { return }
+            if let error = error {
+                self.presentGFAlertOnMainThread(title: "Bookmark Error", message: error.rawValue)
+            } else {
+                self.presentGFAlertOnMainThread(
+                    title: "Nailed it 📌",
+                    message: "You can now find \(user.login) in 📖 Bookmarks tab.",
+                    buttonTitle: "Sweet") {
+                        // update bookmark button appearance
+                        self.configureVC()
+                    }
+            }
+        }
+    }
 }
+// MARK: -
 
 extension FollowersListVC: UICollectionViewDelegate {
 

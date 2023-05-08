@@ -7,10 +7,17 @@
 
 import UIKit
 
+/// A selection of available types of ``User`` parameters that can be
+/// displayed by ``GFItemInfoView``.
 enum ItemInfoType {
     case repos, gists, followers, following
 }
 
+/// A custom view illustrating certain ``User`` parameter within
+/// ``GFItemInfoVC`` card view.
+///
+/// This view includes an `SFSymbol` image and title label on top
+/// and count label centered beneath.
 class GFItemInfoView: UIView {
 
     let symbolImageView = UIImageView()
@@ -27,6 +34,7 @@ class GFItemInfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Configures ``symbolImageView`` and lays out constraints for all subview elements.
     private func configure() {
         addSubviews(symbolImageView, titleLabel, countLabel)
 
@@ -51,6 +59,11 @@ class GFItemInfoView: UIView {
         ])
     }
 
+    /// Sets the type of ``User`` parameter to display.
+    /// - Parameters:
+    ///   - infoType: A type that defines contents of ``symbolImageView``
+    ///   and ``titleLabel``.
+    ///   - count: The count of parameter to display in ``countLabel``.
     func setType(_ infoType: ItemInfoType, withCount count: Int) {
         switch infoType {
         case .repos:

@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// An Error thrown by ``NetworkManager`` when any listed issue occurs.
 enum GFNetworkError: String, Error {
 
     case invalidURL = "Could not perform request due to bad URL - please try again."

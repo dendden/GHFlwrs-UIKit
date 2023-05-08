@@ -10,7 +10,7 @@ import UIKit
 /// A styled Github Followers button.
 ///
 /// Default modifiers include:
-/// + *white* text color
+/// + *white* title color
 /// + *.headline* text font
 /// + corner radius of 10
 class GFButton: UIButton {

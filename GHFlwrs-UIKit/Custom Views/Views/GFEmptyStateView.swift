@@ -7,9 +7,23 @@
 
 import UIKit
 
+/// A `UIView` displayed by ``GFDataLoadingVC`` controllers when their
+/// data sources are empty.
+///
+/// Shows a message in top left and an ``Images/emptyStateLogo`` image
+/// in bottom right.
 class GFEmptyStateView: UIView {
 
+    /// A text displayed in view's body.
+    ///
+    /// Default label appearance includes:
+    /// + text alignment is **.left**, font size is **28**
+    /// + **.secondaryLabel** text color
+    /// + 3 lines of text limit.
     let messageLabel = GFTitleLabel(textAlignment: .left, fontSize: 28)
+
+    /// An ``Images/emptyStateLogo`` image displayed in
+    /// bottom right corner of the view.
     let logoImageView = UIImageView()
 
     override init(frame: CGRect) {
@@ -22,6 +36,8 @@ class GFEmptyStateView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    ///  Creates an instance of ``GFEmptyStateView``.
+    /// - Parameter message: A text to display in view's body.
     convenience init(message: String) {
         self.init(frame: .zero)
 

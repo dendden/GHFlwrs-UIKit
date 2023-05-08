@@ -39,6 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
+    /// Calls ``PersistenceManager/retrieveBookmarks(completion:)`` method
+    /// to populate the ``PersistenceManager/allBookmarkedUsers`` array for
+    /// future reference.
     private func getAllBookmarkedUsers() {
 
         PersistenceManager.retrieveBookmarks { result in

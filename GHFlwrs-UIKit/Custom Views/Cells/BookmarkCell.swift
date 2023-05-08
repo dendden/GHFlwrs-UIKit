@@ -7,6 +7,8 @@
 
 import UIKit
 
+/// A table cell displaying ``GFAvatarImageView`` and username of a
+/// bookmarked user in horizontal alignment.
 class BookmarkCell: UITableViewCell {
 
     static var reuseID = "BookmarkCell"
@@ -24,11 +26,15 @@ class BookmarkCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Configures cell label with follower's username and downloads avatar image.
+    /// - Parameter bookmark: A user whose avatar and username
+    /// must be displayed in cell.
     func set(bookmark: Follower) {
         usernameLabel.text = bookmark.login
-        avatarImageView.downloadImage(from: bookmark.avatarUrl)
+        avatarImageView.downloadImage(fromURL: bookmark.avatarUrl)
     }
 
+    /// Adds image and label subviews and lays out their constraints.
     private func configure() {
         contentView.addSubviews(avatarImageView, usernameLabel)
 

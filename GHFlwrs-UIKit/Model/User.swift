@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// An object representing full information about a GitHub user.
 struct User: Codable {
 
     let login: String
@@ -17,11 +18,14 @@ struct User: Codable {
 
     var publicRepos: Int
     var publicGists: Int
+
+    /// URL address of user's profile on github.com.
     var htmlUrl: String
 
     var following: Int
     var followers: Int
     var followersUrl: String
 
+    /// A date when user joined GitHub.
     let createdAt: Date
 }

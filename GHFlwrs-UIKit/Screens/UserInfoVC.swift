@@ -7,14 +7,28 @@
 
 import UIKit
 
+/// The delegate protocol for ViewControllers listening to request from
+/// ``UserInfoVC`` for updating followers list.
 protocol UserInfoVCDelegate: AnyObject {
+
+    /// Informs the delegate that ``UserInfoVC`` has received a request
+    /// from ``GFFollowerItemVC`` to list followers for a new user.
+    /// - Parameter username: The username of user whose followers must be listed.
     func didRequestFollowersList(for username: String)
 }
 
+/// A `ViewController` that presents detailed information about the user selected
+/// from ``FollowersListVC`` collection.
 class UserInfoVC: UIViewController {
 
+    // MARK: - Class variables
+
     var username: String!
+
+    /// A delegate `ViewController` that receives the request to update followers list.
     weak var userInfoDelegate: UserInfoVCDelegate?
+
+    // MARK: - View variables
 
     let headerView = UIView()
     let itemCardViewOne = UIView()
@@ -23,6 +37,7 @@ class UserInfoVC: UIViewController {
 
     var childViews: [UIView] = []
 
+    // MARK: -
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -31,6 +46,8 @@ class UserInfoVC: UIViewController {
         layoutUI()
     }
 
+    /// Configures background color, negates large title, creates and adds a `Done` button
+    /// for dismiss action.
     private func configure() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = false
@@ -38,10 +55,16 @@ class UserInfoVC: UIViewController {
         navigationItem.rightBarButtonItem = doneButton
     }
 
+    /// Dismisses this `ViewController` with animation.
     @objc private func dismissVC() {
         dismiss(animated: true)
     }
 
+    /// Fetches user info with ``NetworkManager``.``NetworkManager/getUserInfo(for:completion:)``
+    /// method.
+    ///
+    /// If network request fails, this method presents a ``GFAlertVC`` with ``GFNetworkError`` description.
+    /// - Parameter username: The username of user whose info must be fetched.
     private func getUserInfo(for username: String) {
         NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
 
@@ -60,17 +83,23 @@ class UserInfoVC: UIViewController {
         }
     }
 
+    /// Initializes `ViewControllers` for ``GFUserInfoHeaderVC`` and info cards for
+    /// ``GFRepoItemVC`` and ``GFFollowerItemVC``, adding them as children to `self`,
+    /// and populates the bottom ``dateLabel`` with the date when user joined GitHub.
+    /// - Parameter user: A user whose information must be displayed.
     private func configureUIElementsWith(user: User) {
 
+        let headerVC = GFUserInfoHeaderVC(user: user)
         let repoItemVC = GFRepoItemVC(user: user, delegate: self)
         let followerItemVC = GFFollowerItemVC(user: user, delegate: self)
 
-        self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
+        self.add(childVC: headerVC, to: self.headerView)
         self.add(childVC: repoItemVC, to: self.itemCardViewOne)
         self.add(childVC: followerItemVC, to: self.itemCardViewTwo)
         self.dateLabel.text = "GitHub since " + user.createdAt.shortMonthAndYear
     }
 
+    /// Adds child subviews and activates their layout constraints.
     private func layoutUI() {
 
         let padding: CGFloat = 20
@@ -102,6 +131,10 @@ class UserInfoVC: UIViewController {
         ])
     }
 
+    /// Adds child `ViewControllers` to self and adds their views to provided `containerView`.
+    /// - Parameters:
+    ///   - childVC: A `ViewController` to add as a child to self.
+    ///   - containerView: A view to which the child `ViewController`'s view should be added.
     private func add(childVC: UIViewController, to containerView: UIView) {
         addChild(childVC)
         containerView.addSubview(childVC.view)
@@ -109,6 +142,7 @@ class UserInfoVC: UIViewController {
         childVC.didMove(toParent: self)
     }
 }
+// MARK: -
 
 extension UserInfoVC: GFRepoItemVCDelegate, GFFollowerItemVCDelegate {
 

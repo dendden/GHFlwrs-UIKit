@@ -7,6 +7,13 @@
 
 import UIKit
 
+/// A custom label configured for use with secondary title texts.
+///
+/// Label appearance includes:
+/// + **medium** font weight
+/// + **.secondaryLabel** font color
+/// + **truncating tail** line break mode
+/// + **0.85** min scale factor.
 class GFSubtitleLabel: UILabel {
 
     override init(frame: CGRect) {
@@ -19,6 +26,10 @@ class GFSubtitleLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Creates an instance of ``GFSubtitleLabel``.
+    /// - Parameters:
+    ///   - fontSize: Font size for label text.
+    ///   - textAlignment: Alignment for the label text. Default value is **.left**.
     convenience init(fontSize: CGFloat, textAlignment: NSTextAlignment = .left) {
         self.init(frame: .zero)
 

@@ -127,6 +127,7 @@
 			children = (
 				08DA076429FE59540095A194 /* NetworkManager.swift */,
 				082ACF732A03982000A2DEFD /* PersistenceManager.swift */,
+				082ACF752A03991200A2DEFD /* FileManager+Ext.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -269,7 +270,6 @@
 				082ACF8E2A055D7100A2DEFD /* UIView+Ext.swift */,
 				082ACF692A02776200A2DEFD /* Date+Ext.swift */,
 				082ACF6B2A02797300A2DEFD /* String+Ext.swift */,
-				082ACF752A03991200A2DEFD /* FileManager+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";

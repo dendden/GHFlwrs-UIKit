@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// An object representing either a GitHub follower or a bookmarked user.
 struct Follower: Codable, Equatable, Hashable {
 
     let login: String

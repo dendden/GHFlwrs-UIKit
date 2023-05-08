@@ -7,13 +7,17 @@
 
 import UIKit
 
+/// Initial `ViewController` of a `Search` tab, containing a ``GFSearchField``
+/// and a ``GFButton`` that pushes ``FollowersListVC`` with search results
+/// onto   `NavigationController` stack.
 class SearchVC: UIViewController {
 
     let logoImageView = UIImageView()
     let usernameSearchField = GFSearchField()
     let searchButton = GFButton(buttonColor: .systemGreen, title: "Get Followers")
-    var logoImageViewTopConstraint: NSLayoutConstraint!
 
+    /// A variable that checks whether any characters except white spaces were
+    /// entered into the search field.
     var isUsernameEntered: Bool {
         if let searchFieldText = usernameSearchField.text {
             return !searchFieldText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -41,7 +45,8 @@ class SearchVC: UIViewController {
         usernameSearchField.text = ""
     }
 
-    func createDismissKeyboardTapGesture() {
+    /// Adds a tap gesture that dismisses keyboard to the view.
+    private func createDismissKeyboardTapGesture() {
         let tap = UITapGestureRecognizer(
             target: view,
             action: #selector(UIView.endEditing)
@@ -49,7 +54,10 @@ class SearchVC: UIViewController {
         view.addGestureRecognizer(tap)
     }
 
-    @objc func pushFollowersListVC() {
+    /// Dismisses keyboard and checks ``isUsernameEntered`` variable:
+    /// if true, a ``FollowersListVC`` with entered username is created and
+    /// pushed onto `NavigationController`. If false, an alert is shown.
+    @objc private func pushFollowersListVC() {
 
         view.endEditing(true)   // dismiss keyboard
 
@@ -68,7 +76,7 @@ class SearchVC: UIViewController {
 
     /// Adds `logoImageView` to parent view, assigns the image and activates
     /// layout constraints.
-    func configureLogoImageView() {
+    private func configureLogoImageView() {
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         logoImageView.image = Images.ghLogo
 
@@ -83,20 +91,20 @@ class SearchVC: UIViewController {
             topConstraintConstant = 60
         }
 
-        logoImageViewTopConstraint = logoImageView.topAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.topAnchor,
-            constant: topConstraintConstant
-        )
-        logoImageViewTopConstraint.isActive = true
-
         NSLayoutConstraint.activate([
+            logoImageView.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor,
+                constant: topConstraintConstant
+            ),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7),
             logoImageView.widthAnchor.constraint(equalTo: logoImageView.heightAnchor, multiplier: 1)
         ])
     }
 
-    func configureSearchField() {
+    /// Assigns self as a `UITextFieldDelegate` for ``usernameSearchField``,
+    /// activates constraints for search field.
+    private func configureSearchField() {
         // listen for Return key hit to perform action:
         usernameSearchField.delegate = self
 
@@ -108,7 +116,9 @@ class SearchVC: UIViewController {
         ])
     }
 
-    func configureSearchButton() {
+    /// Configures ``searchButton`` with an action to call `pushFollowersListVC()`
+    /// method, activates layout constraints for the ``searchButton``.
+    private func configureSearchButton() {
         searchButton.addTarget(self, action: #selector(pushFollowersListVC), for: .touchUpInside)
 
         NSLayoutConstraint.activate([

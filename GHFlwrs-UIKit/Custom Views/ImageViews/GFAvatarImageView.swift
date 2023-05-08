@@ -7,9 +7,15 @@
 
 import UIKit
 
+/// A custom-configured `UIImageView` for displaying user avatar images.
+///
+/// Includes a `cornerRadius` of 10 pts and a default ``Images/placeholder`` image.
 class GFAvatarImageView: UIImageView {
 
+    /// A default image to display when image failed to load from `URL`.
     let placeholderImage = Images.placeholder
+
+    /// ``NetworkManager`` ``NetworkManager/cache`` for storing downloaded avatar images.
     let cache = NetworkManager.shared.cache
 
     override init(frame: CGRect) {
@@ -29,7 +35,12 @@ class GFAvatarImageView: UIImageView {
         translatesAutoresizingMaskIntoConstraints = false
     }
 
-    func downloadImage(from urlString: String) {
+    /// Calls ``NetworkManager``.``NetworkManager/downloadImage(from:completion:)``
+    /// method and assigns retrieved image to `self` on **main thread** if request was successful.
+    ///
+    /// If network request for image fails, this view displays ``Images/placeholder`` image.
+    /// - Parameter urlString: A `String` representation of image `URL`.
+    func downloadImage(fromURL urlString: String) {
 
         NetworkManager.shared.downloadImage(from: urlString) { [weak self] image in
 

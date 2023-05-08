@@ -7,8 +7,14 @@
 
 import UIKit
 
+/// A `ViewController` that interacts with ``PersistenceManager`` for listing
+/// all bookmarked users in a `UITableView` of ``BookmarkCell`` and deleting
+/// individual bookmarks.
+///
+/// If there are no bookmarked users - this controller displays an empty state view.
 class BookmarksVC: GFDataLoadingVC {
 
+    /// An array of bookmarked users.
     var bookmarks: [Follower] = []
 
     let tableView = UITableView()
@@ -41,6 +47,15 @@ class BookmarksVC: GFDataLoadingVC {
         tableView.register(BookmarkCell.self, forCellReuseIdentifier: BookmarkCell.reuseID)
     }
 
+    /// Calls ``PersistenceManager``.``PersistenceManager/retrieveBookmarks(completion:)``
+    /// method.
+    ///
+    /// If retrieve request fails - this method presents a ``GFAlertVC`` with ``GFPersistenceError`` description.
+    ///
+    /// If request returns an empty array - empty state view is displayed.
+    ///
+    /// If request is successful - this method assigns ``bookmarks`` variable and updates `UITableView`
+    /// with bookmarks data.
     private func getBookmarks() {
         PersistenceManager.retrieveBookmarks { [weak self] result in
 
@@ -48,18 +63,25 @@ class BookmarksVC: GFDataLoadingVC {
 
             switch result {
             case .success(let bookmarks):
-                if bookmarks.isEmpty {
-                    self.showEmptyStateView(with: "Your bookmarked users will appear here.", in: self.view)
-                } else {
-                    DispatchQueue.main.async {
-                        self.bookmarks = bookmarks
-                        self.tableView.reloadData()
-                        // if empty state was showing, move TV on top of it
-                        self.view.bringSubviewToFront(self.tableView)
-                    }
-                }
+                self.updateUI(with: bookmarks)
             case .failure(let error):
                 self.presentGFAlertOnMainThread(title: "Bookmarking is hard!", message: error.rawValue)
+            }
+        }
+    }
+
+    /// Updates the `UITableView` if fetched bookmarks are not empty, otherwise
+    /// displays empty state view.
+    /// - Parameter bookmarks: An array of bookmarked users, fetched from persistent storage.
+    private func updateUI(with bookmarks: [Follower]) {
+        if bookmarks.isEmpty {
+            showEmptyStateView(with: "Your bookmarked users will appear here.", in: self.view)
+        } else {
+            DispatchQueue.main.async {
+                self.bookmarks = bookmarks
+                self.tableView.reloadData()
+                // if empty state was showing, move TV on top of it
+                self.view.bringSubviewToFront(self.tableView)
             }
         }
     }

@@ -7,6 +7,8 @@
 
 import UIKit
 
+/// A collection cell displaying follower's ``GFAvatarImageView`` and username
+/// in vertical alignment.
 class FollowerCell: UICollectionViewCell {
 
     static var reuseID = "FollowerCell"
@@ -24,11 +26,15 @@ class FollowerCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Configures cell label with follower's username and downloads avatar image.
+    /// - Parameter follower: A follower whose avatar and username
+    /// must be displayed in cell.
     func set(follower: Follower) {
         usernameLabel.text = follower.login
-        avatarImageView.downloadImage(from: follower.avatarUrl)
+        avatarImageView.downloadImage(fromURL: follower.avatarUrl)
     }
 
+    /// Adds image and label subviews and lays out their constraints.
     private func configure() {
         contentView.addSubviews(avatarImageView, usernameLabel)
 

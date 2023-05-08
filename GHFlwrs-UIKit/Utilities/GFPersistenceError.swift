@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// An Error thrown by ``PersistenceManager`` when any listed issue occurs.
 enum GFPersistenceError: String, Error {
 
     case dataEncodeError = "Unable to encode data to JSON format."

@@ -11,6 +11,9 @@ import Foundation
 
 extension String {
 
+    /// Converts an `.iso8601 String` representation into a `Date`.
+    /// - Returns: A `Date` object if `DateFormatter` succeeded
+    /// with conversion, `nil` if an error occurred.
     func convertToDate() -> Date? {
 
         let formatter           = DateFormatter()

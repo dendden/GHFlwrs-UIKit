@@ -7,12 +7,11 @@
 
 import UIKit
 
+/// A custom Alert `UIViewController` presented with a full-screen
+/// transparent black background and a centered container with alert content.
 class GFAlertVC: UIViewController {
 
-    let container = GFAlertContainerView()
-    let titleLabel = GFTitleLabel(textAlignment: .center, fontSize: 20)
-    let messageLabel = GFBodyLabel(textAlignment: .center)
-    let actionButton = GFButton(buttonColor: .systemPink, title: "OK")
+    // MARK: - Class variables
 
     private var alertTitle: String?
     private var alertMessage: String?
@@ -20,8 +19,31 @@ class GFAlertVC: UIViewController {
 
     private var alertCompletion: (() -> Void)?
 
+    /// Default padding of 20 pts for alert container elements.
     let padding: CGFloat = 20
 
+    // MARK: - View variables
+
+    /// A container view for alert content.
+    let container = GFAlertContainerView()
+
+    /// Alert ``GFTitleLabel`` with `.center` text alignment and font size of 20.
+    let titleLabel = GFTitleLabel(textAlignment: .center, fontSize: 20)
+
+    /// Alert ``GFBodyLabel`` message label with `.center` text alignment.
+    let messageLabel = GFBodyLabel(textAlignment: .center)
+
+    /// Alert button with `.systemPink` color and default title of "OK".
+    let actionButton = GFButton(buttonColor: .systemPink, title: "OK")
+
+    // MARK: -
+    /// Creates an instance of  ``GFAlertVC``.
+    /// - Parameters:
+    ///   - alertTitle: A title for alert.
+    ///   - alertMessage: A message that alert conveys.
+    ///   - buttonTitle: A title for alert button. Default vale is "**OK**".
+    ///   - completion: An optional completion handler to execute when
+    ///   alert is dismissed.
     init(alertTitle: String, alertMessage: String, buttonTitle: String? = "OK", completion: (() -> Void)? = nil) {
         super.init(nibName: nil, bundle: nil)
 
@@ -48,7 +70,8 @@ class GFAlertVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configureContainerView() {
+    /// Lays out constraints for alert ``container`` view.
+    private func configureContainerView() {
         NSLayoutConstraint.activate([
             container.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -57,7 +80,9 @@ class GFAlertVC: UIViewController {
         ])
     }
 
-    func configureTitleLabel() {
+    /// Sets ``titleLabel`` text to the value of `alertTitle` or default
+    /// "*"Alert [No Title]"*" text, lays out constraints  within alert ``container``.
+    private func configureTitleLabel() {
         titleLabel.text = alertTitle ?? "Alert [No Title]"
 
         NSLayoutConstraint.activate([
@@ -68,7 +93,9 @@ class GFAlertVC: UIViewController {
         ])
     }
 
-    func configureActionButton() {
+    /// Sets ``actionButton`` title to the value of `buttonTitle` or default "*OK*" text,
+    /// adds target to dismiss alert on button tap, and lays out constraints within alert ``container``.
+    private func configureActionButton() {
         actionButton.setTitle(buttonTitle ?? "OK", for: .normal)
         actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
 
@@ -80,14 +107,18 @@ class GFAlertVC: UIViewController {
         ])
     }
 
-    @objc func dismissVC() {
+    /// Dismisses this alert view and executes the optional completion handler passed at initialization.
+    @objc private func dismissVC() {
         dismiss(animated: true)
         if let completion = alertCompletion {
             completion()
         }
     }
 
-    func configureMessageLabel() {
+    /// Sets ``messageLabel`` text to the value of `alertMessage` or default
+    /// "*[Alert details n/a]*" text, sets `lineLimit` to 4, and lays out constraints
+    /// within alert ``container``.
+    private func configureMessageLabel() {
         messageLabel.text = alertMessage ?? "[Alert details n/a]"
         messageLabel.numberOfLines = 4
 

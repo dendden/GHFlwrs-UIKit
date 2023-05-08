@@ -7,13 +7,17 @@
 
 import UIKit
 
+/// A collection of custom `UIImages` from `Asset Catalog`.
 enum Images {
+
     static let ghLogo = UIImage(named: "gh-logo")
     static let placeholder = UIImage(named: "avatar-placeholder")
     static let emptyStateLogo = UIImage(named: "empty-state-logo")
 }
 
+/// A collection of `UIImages` created with `SFSymbols`.
 enum SystemImages {
+
     static let location = UIImage(systemName: "mappin.and.ellipse")
     static let search = UIImage(systemName: "magnifyingglass")
     static let repos = UIImage(systemName: "folder")
@@ -24,12 +28,18 @@ enum SystemImages {
     static let bookmarkFill = UIImage(systemName: "bookmark.fill")
 }
 
+/// Reference values for `width` and `height` of current `Window`.
+///
+/// Values are defined in `scene(willConnectTo:)` method of `SceneDelegate`.
 enum ScreenSize {
+
     static var width: CGFloat = 0
     static var height: CGFloat = 0
 }
 
+/// A collection of smaller iPhone devices derived from ``ScreenSize`` height value.
 enum DeviceTypes {
+
     static let idiom = UIDevice.current.userInterfaceIdiom
     static var nativeScale: CGFloat = 0
     static var scale: CGFloat = 0

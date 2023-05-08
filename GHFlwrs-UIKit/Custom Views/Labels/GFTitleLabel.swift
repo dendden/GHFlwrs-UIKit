@@ -7,6 +7,13 @@
 
 import UIKit
 
+/// A custom label configured for use with title texts.
+///
+/// Label appearance includes:
+/// + **bold** font weight
+/// + **.label** font color
+/// + **truncating tail** line break mode
+/// + **0.85** min scale factor.
 class GFTitleLabel: UILabel {
 
     override init(frame: CGRect) {
@@ -19,6 +26,10 @@ class GFTitleLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Creates an instance of ``GFTitleLabel``.
+    /// - Parameters:
+    ///   - textAlignment: Alignment for the label text.
+    ///   - fontSize: Font size for label text.
     convenience init(textAlignment: NSTextAlignment, fontSize: CGFloat) {
         self.init(frame: .zero)
 

@@ -15,7 +15,9 @@ class GFTabBarController: UITabBarController {
         configureTabBar()
     }
 
-    /// Configures Tab bar with tint color of `green` and ViewControllers of [SearchNC, FavoritesNC].
+    /// Configures Tab bar with `default background` appearance and tint color of `systemGreen`,
+    /// calls ``configureNavigationBar()`` method and adds `Search` and `Favorites`
+    /// navigation controllers by calling their corresponding `make()` methods..
     private func configureTabBar() {
         let appearance = UITabBarAppearance()
         appearance.configureWithDefaultBackground()
@@ -28,6 +30,8 @@ class GFTabBarController: UITabBarController {
         viewControllers = [makeSearchNC(), makeFavoritesNC()]
     }
 
+    /// Configures the app's `NavigationBar` with `default background` appearance,
+    /// tint color of `systemGreen` and preferred large titles.
     private func configureNavigationBar() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithDefaultBackground()

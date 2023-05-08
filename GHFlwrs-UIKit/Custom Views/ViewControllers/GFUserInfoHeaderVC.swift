@@ -7,6 +7,8 @@
 
 import UIKit
 
+/// The header of ``UserInfoVC``, displaying user's avatar, username,
+/// (*optionally*) real name and location, as well as a short bio.
 class GFUserInfoHeaderVC: UIViewController {
 
     let avatarImageView = GFAvatarImageView(frame: .zero)
@@ -18,6 +20,8 @@ class GFUserInfoHeaderVC: UIViewController {
 
     var user: User!
 
+    /// Creates an instance of ``GFUserInfoHeaderVC``.
+    /// - Parameter user: A user whose information must be displayed.
     init(user: User) {
         super.init(nibName: nil, bundle: nil)
         self.user = user
@@ -31,13 +35,15 @@ class GFUserInfoHeaderVC: UIViewController {
         super.viewDidLoad()
 
         view.addSubviews(avatarImageView, usernameLabel, nameLabel, locationImageView, locationLabel, bioLabel)
+
         layoutUI()
         configureUIElements()
     }
 
+    /// Downloads the avatar image and configures other subviews to
+    /// display relevant user information.
     private func configureUIElements() {
-
-        avatarImageView.downloadImage(from: user.avatarUrl)
+        avatarImageView.downloadImage(fromURL: user.avatarUrl)
         usernameLabel.text          = user.login
         nameLabel.text              = user.name ?? ""
         bioLabel.text               = user.bio ?? "*No bio available.*"
@@ -47,6 +53,7 @@ class GFUserInfoHeaderVC: UIViewController {
         locationImageView.tintColor = .secondaryLabel
     }
 
+    /// Lays out the constraints for all view elements.
     private func layoutUI() {
         let textToImagePadding: CGFloat = 12
         locationImageView.translatesAutoresizingMaskIntoConstraints = false

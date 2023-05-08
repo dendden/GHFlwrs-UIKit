@@ -7,6 +7,12 @@
 
 import UIKit
 
+/// A container view for ``GFAlertVC`` content.
+///
+/// Default appearance includes:
+/// + `.systemBackground` color
+/// + `cornerRadius` of 16 pts
+/// + `borderWidth` of 2 pts, `borderColor` of *white*.
 class GFAlertContainerView: UIView {
 
     override init(frame: CGRect) {

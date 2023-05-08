@@ -7,15 +7,17 @@
 
 import UIKit
 
-/// A style Github Followers Text Field.
+/// A styled Github Followers search field.
 ///
 /// Default modifiers include:
 /// + **Font**: '.title2', lineLimit: 1, min. font size: 12, text alignment: '.center'
-/// + autocorrection disabled
+/// + autocorrection and autocapitalization disabled
 /// + cursor tint and text color set to `.label`
+/// + return key of type `.go`
 /// + background color of `tertiarySystemBackground`
 /// + border color of `systemGray4`, border width of 2
 /// + corner radius of 10
+/// + attributedPlaceholder of format "<``SystemImages/search`` SFSymbol> *Search username*"
 class GFSearchField: UITextField {
 
     override init(frame: CGRect) {

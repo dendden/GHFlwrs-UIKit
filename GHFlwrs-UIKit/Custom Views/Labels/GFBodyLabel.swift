@@ -7,6 +7,13 @@
 
 import UIKit
 
+/// A custom label configured for use with plain body texts.
+///
+/// Label appearance includes:
+/// + **body** font style
+/// + **.secondaryLabel** font color
+/// + **word wrapping** line break mode
+/// + **0.75** min scale factor.
 class GFBodyLabel: UILabel {
 
     override init(frame: CGRect) {
@@ -19,6 +26,8 @@ class GFBodyLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Creates an instance of ``GFBodyLabel``.
+    /// - Parameter textAlignment: Alignment for the label text.
     convenience init(textAlignment: NSTextAlignment) {
         self.init(frame: .zero)
 
