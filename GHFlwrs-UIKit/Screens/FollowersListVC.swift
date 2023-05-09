@@ -77,7 +77,7 @@ class FollowersListVC: GFDataLoadingVC {
         configureSearchController()
         configureCollectionView()
 
-        getFollowers(username: username, page: page)
+        getFollowers()
         configureDataSource()
     }
 
@@ -145,7 +145,7 @@ class FollowersListVC: GFDataLoadingVC {
         }
     }
 
-    /// Performs a network call with ``NetworkManager``.``NetworkManager/getFollowers(for:page:completion:)``
+    /// Performs a network call with ``NetworkManager``.``NetworkManager/getFollowers(for:page:)``
     /// method.
     ///
     /// This method also shows `ProgressLoadingView` prior to network call and hides it once
@@ -153,14 +153,18 @@ class FollowersListVC: GFDataLoadingVC {
     /// - Parameters:
     ///   - username: A username of user, whose followers must be retrieved via a network request.
     ///   - page: The page for fetch results.
-    private func getFollowers(username: String, page: Int) {
+    private func getFollowers() {
 
         showLoadingProgressView()
         Task {
             do {
                 try await requestFollowers(username: username, page: page)
             } catch {
-                presentNetworkError(error)
+                presentNetworkError(error) {
+                    if self.followers.isEmpty {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
             }
             isLoadingMoreFollowers = false
         }
@@ -215,25 +219,6 @@ class FollowersListVC: GFDataLoadingVC {
         }
     }
 
-    /// Presents a ``GFAlertVC`` with error description to user.
-    /// - Parameter error: Error which must be presented to user.
-    private func presentNetworkError(_ error: Error) {
-        dismissLoadingProgressView()
-        if let networkError = error as? GFNetworkError {
-            presentGFAlert(title: "Problem 🤦🏼‍♂️", message: networkError.rawValue) {
-                if self.followers.isEmpty {
-                    self.navigationController?.popViewController(animated: true)
-                }
-            }
-        } else {
-            presentGenericError {
-                if self.followers.isEmpty {
-                    self.navigationController?.popViewController(animated: true)
-                }
-            }
-        }
-    }
-
     /// Configures the `UICollectionViewDiffableDataSource` by calling
     /// `.dequeueReusableCell(withReuseIdentifier:)` and assigning
     /// ``Follower`` to the ``FollowerCell`` with its ``FollowerCell/set(follower:)``
@@ -261,7 +246,7 @@ class FollowersListVC: GFDataLoadingVC {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 
-    /// Fetches user info with ``NetworkManager``.``NetworkManager/getUserInfo(for:completion:)``
+    /// Fetches user info with ``NetworkManager``. ``NetworkManager/getUserInfo(for:)``
     /// method and calls ``PersistenceManager``.``PersistenceManager/updateWith(_:actionType:completion:)``
     /// to check for user's bookmarked status and add this user to bookmarks or show alert
     /// informing that current user is already bookmarked.
@@ -272,7 +257,22 @@ class FollowersListVC: GFDataLoadingVC {
 
         showLoadingProgressView()
 
-        NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
+        Task {
+            do {
+                let user = try await NetworkManager.shared.getUserInfo(for: username)
+                dismissLoadingProgressView()
+                bookmarkUser(user)
+            } catch {
+                dismissLoadingProgressView()
+                presentGFAlert(
+                    title: "Bookmark Error",
+                    message: "There's a problem retrieving sufficient user info to bookmark 🤷🏻‍♂️"
+                )
+            }
+        }
+
+        /* Old way of performing network call (with completion handler + Result type): */
+        /*NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
 
             guard let self = self else { return }
 
@@ -287,7 +287,7 @@ class FollowersListVC: GFDataLoadingVC {
                     message: "There's a problem retrieving sufficient user info to bookmark 🤷🏻‍♂️"
                 )
             }
-        }
+        }*/
     }
 
     /// Creates a ``Follower`` object from provided user and calls
@@ -299,15 +299,19 @@ class FollowersListVC: GFDataLoadingVC {
         PersistenceManager.updateWith(bookmark, actionType: .add) { [weak self] error in
             guard let self = self else { return }
             if let error = error {
-                self.presentGFAlert(title: "Bookmark Error", message: error.rawValue)
+                DispatchQueue.main.async {
+                    self.presentGFAlert(title: "Bookmark Error", message: error.rawValue)
+                }
             } else {
-                self.presentGFAlert(
-                    title: "Nailed it 📌",
-                    message: "You can now find \(user.login) in 📖 Bookmarks tab.",
-                    buttonTitle: "Sweet") {
-                        // update bookmark button appearance
-                        self.configureVC()
-                    }
+                DispatchQueue.main.async {
+                    self.presentGFAlert(
+                        title: "Nailed it 📌",
+                        message: "You can now find \(user.login) in 📖 Bookmarks tab.",
+                        buttonTitle: "Sweet") {
+                            // update bookmark button appearance
+                            self.configureVC()
+                        }
+                }
             }
         }
     }
@@ -324,7 +328,7 @@ extension FollowersListVC: UICollectionViewDelegate {
         if offset > (contentHeight - screenHeight) && userHasMoreFollowersToLoad && !isLoadingMoreFollowers {
             isLoadingMoreFollowers = true
             page += 1
-            getFollowers(username: username, page: page)
+            getFollowers()
         }
     }
 
@@ -347,8 +351,7 @@ extension FollowersListVC: UICollectionViewDelegate {
 extension FollowersListVC: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
-        guard let filter = searchController.searchBar.text
-        else { return }
+        guard let filter = searchController.searchBar.text else { return }
 
         if filter.trimmingCharacters(in: .whitespaces).isEmpty {
             if !filteredFollowers.isEmpty {
@@ -356,9 +359,7 @@ extension FollowersListVC: UISearchResultsUpdating {
                 filteredFollowers.removeAll()
                 updateData(on: followers)
                 return
-            } else {
-                return
-            }
+            } else { return }
         }
 
         filteredFollowers = followers.filter {
@@ -372,7 +373,6 @@ extension FollowersListVC: UISearchResultsUpdating {
 extension FollowersListVC: UserInfoVCDelegate {
 
     func didRequestFollowersList(for username: String) {
-
         self.username = username
         title = username
         configureVC()   // this updates bookmark button
@@ -383,6 +383,6 @@ extension FollowersListVC: UserInfoVCDelegate {
         navigationItem.searchController?.isActive = false
         collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
 
-        getFollowers(username: username, page: page)
+        getFollowers()
     }
 }

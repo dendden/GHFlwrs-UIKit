@@ -61,4 +61,17 @@ class GFDataLoadingVC: UIViewController {
         emptyStateView.frame = view.bounds
         view.addSubview(emptyStateView)
     }
+
+    /// Presents a ``GFAlertVC`` with error description to user.
+    /// - Parameters:
+    ///   - error: Error which must be presented to user.
+    ///   - completion: An optional completion handler to pass into ``GFAlertVC``.
+    func presentNetworkError(_ error: Error, completion: (() -> Void)? = nil) {
+        dismissLoadingProgressView()
+        if let networkError = error as? GFNetworkError {
+            presentGFAlert(title: "Problem 🤦🏼‍♂️", message: networkError.rawValue, completion: completion)
+        } else {
+            presentGenericError(completion: completion)
+        }
+    }
 }

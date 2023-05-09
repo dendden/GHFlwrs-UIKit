@@ -19,7 +19,7 @@ protocol UserInfoVCDelegate: AnyObject {
 
 /// A `ViewController` that presents detailed information about the user selected
 /// from ``FollowersListVC`` collection.
-class UserInfoVC: UIViewController {
+class UserInfoVC: GFDataLoadingVC {
 
     // MARK: - Class variables
 
@@ -60,13 +60,30 @@ class UserInfoVC: UIViewController {
         dismiss(animated: true)
     }
 
-    /// Fetches user info with ``NetworkManager``.``NetworkManager/getUserInfo(for:completion:)``
+    /// Fetches user info with ``NetworkManager``.``NetworkManager/getUserInfo(for:)``
     /// method.
     ///
     /// If network request fails, this method presents a ``GFAlertVC`` with ``GFNetworkError`` description.
     /// - Parameter username: The username of user whose info must be fetched.
     private func getUserInfo(for username: String) {
-        NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
+
+        showLoadingProgressView()
+
+        Task {
+            do {
+                let user = try await NetworkManager.shared.getUserInfo(for: username)
+                configureUIElementsWith(user: user)
+                dismissLoadingProgressView()
+            } catch {
+                dismissLoadingProgressView()
+                presentNetworkError(error) {
+                    self.dismiss(animated: true)
+                }
+            }
+        }
+
+        /* Old way of performing network call (with completion handler + Result type): */
+        /*NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
 
             guard let self = self else { return }
 
@@ -80,7 +97,7 @@ class UserInfoVC: UIViewController {
                     self.dismiss(animated: true)
                 }
             }
-        }
+        }*/
     }
 
     /// Initializes `ViewControllers` for ``GFUserInfoHeaderVC`` and info cards for

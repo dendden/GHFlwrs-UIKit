@@ -65,7 +65,9 @@ class BookmarksVC: GFDataLoadingVC {
             case .success(let bookmarks):
                 self.updateUI(with: bookmarks)
             case .failure(let error):
-                self.presentGFAlert(title: "Bookmarking is hard!", message: error.rawValue)
+                DispatchQueue.main.async {
+                    self.presentGFAlert(title: "Bookmarking is hard!", message: error.rawValue)
+                }
             }
         }
     }
@@ -123,11 +125,13 @@ extension BookmarksVC: UITableViewDataSource, UITableViewDelegate {
 
             guard let self = self else { return }
 
-            if let error = error {
-                self.presentGFAlert(title: "Not really", message: error.rawValue)
-            } else {
-                self.bookmarks.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.presentGFAlert(title: "Not really", message: error.rawValue)
+                } else {
+                    self.bookmarks.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .automatic)
+                }
             }
         }
     }

@@ -35,14 +35,21 @@ class GFAvatarImageView: UIImageView {
         translatesAutoresizingMaskIntoConstraints = false
     }
 
-    /// Calls ``NetworkManager``.``NetworkManager/downloadImage(from:completion:)``
-    /// method and assigns retrieved image to `self` on **main thread** if request was successful.
+    /// Calls ``NetworkManager``. ``NetworkManager/downloadImage(from:)``
+    /// method and assigns retrieved image to `self` if request was successful.
     ///
     /// If network request for image fails, this view displays ``Images/placeholder`` image.
     /// - Parameter urlString: A `String` representation of image `URL`.
     func downloadImage(fromURL urlString: String) {
 
-        NetworkManager.shared.downloadImage(from: urlString) { [weak self] image in
+        Task {
+            if let image = await NetworkManager.shared.downloadImage(from: urlString) {
+                self.image = image
+            }
+        }
+
+        /* Old way of performing network call (with completion handler + Result type): */
+        /*NetworkManager.shared.downloadImage(from: urlString) { [weak self] image in
 
             guard let self = self else { return }
 
@@ -51,7 +58,7 @@ class GFAvatarImageView: UIImageView {
                     self.image = image
                 }
             }
-        }
+        }*/
     }
 
 }
