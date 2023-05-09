@@ -1,6 +1,10 @@
 # GHFlwrs-UIKit
 
-The "GitHub Followers" app from Sean Allen's ["Take Home Project" course](https://seanallen.teachable.com/p/take-home), with few custom improvements.
+<p align="center">
+  <img src="https://img.shields.io/badge/Swift-5.8-orange" title="Swift version 5.8">
+</p>
+
+The **"GitHub Followers"** app from Sean Allen's ["Take Home Project" course](https://seanallen.teachable.com/p/take-home), with few custom improvements.
 
 <p align="center">
   <img src="/Screens/1.png" width="200" title="Initial search screen">
