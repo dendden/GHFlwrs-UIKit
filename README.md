@@ -2,7 +2,7 @@
 
 The "GitHub Followers" app from Sean Allen's "Take Home Project" course, with few custom improvements.
 
-![screen_1](/screens/1.png)
+![screen_1](/Screens/1.png)
 
 ## Improvements List
 
