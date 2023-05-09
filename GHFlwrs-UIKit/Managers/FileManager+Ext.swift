@@ -31,7 +31,7 @@ extension FileManager {
         keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy = .useDefaultKeys
     ) throws {
 
-        guard let documentsDirectory = documentsDirectory else {
+        guard let documentsDirectory else {
             fatalError("Unable to locate Documents Directory to write file.")
         }
         let fileURL = documentsDirectory.appending(path: fileName)
@@ -67,7 +67,7 @@ extension FileManager {
         keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
     ) throws -> T {
 
-        guard let documentsDirectory = documentsDirectory else {
+        guard let documentsDirectory else {
             fatalError("Unable to locate Documents Directory to write file.")
         }
         let fileURL = documentsDirectory.appending(path: fileName)

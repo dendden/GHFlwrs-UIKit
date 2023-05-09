@@ -59,7 +59,7 @@ class BookmarksVC: GFDataLoadingVC {
     private func getBookmarks() {
         PersistenceManager.retrieveBookmarks { [weak self] result in
 
-            guard let self = self else { return }
+            guard let self else { return }
 
             switch result {
             case .success(let bookmarks):
@@ -123,10 +123,10 @@ extension BookmarksVC: UITableViewDataSource, UITableViewDelegate {
 
         PersistenceManager.updateWith(bookmark, actionType: .remove) { [weak self] error in
 
-            guard let self = self else { return }
+            guard let self else { return }
 
             DispatchQueue.main.async {
-                if let error = error {
+                if let error {
                     self.presentGFAlert(title: "Not really", message: error.rawValue)
                 } else {
                     self.bookmarks.remove(at: indexPath.row)

@@ -297,8 +297,8 @@ class FollowersListVC: GFDataLoadingVC {
     private func bookmarkUser(_ user: User) {
         let bookmark = Follower(login: user.login, avatarUrl: user.avatarUrl)
         PersistenceManager.updateWith(bookmark, actionType: .add) { [weak self] error in
-            guard let self = self else { return }
-            if let error = error {
+            guard let self else { return }
+            if let error {
                 DispatchQueue.main.async {
                     self.presentGFAlert(title: "Bookmark Error", message: error.rawValue)
                 }
