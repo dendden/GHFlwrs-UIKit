@@ -2,7 +2,10 @@
 
 The "GitHub Followers" app from Sean Allen's "Take Home Project" course, with few custom improvements.
 
-![screen_1](/Screens/1.png)
+<p align="center">
+  <img src="/Screens/1.png" width="200" title="Initial search screen">
+  <img src="/Screens/2.png" width="200" title="Followers list">
+</p>
 
 ## Improvements List
 
