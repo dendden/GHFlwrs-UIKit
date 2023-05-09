@@ -2,6 +2,8 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Swift-5.8-orange" title="Swift version 5.8">
+  <img src="https://img.shields.io/badge/iOS-16.4-brightgreen" title="iOS 16.4">
+  <img src="https://img.shields.io/badge/Xcode-14.3-blue" title="Xcode 14.3">
 </p>
 
 The **"GitHub Followers"** app from Sean Allen's ["Take Home Project" course](https://seanallen.teachable.com/p/take-home), with few custom improvements.
