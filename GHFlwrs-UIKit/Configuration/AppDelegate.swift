@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         PersistenceManager.retrieveBookmarks { result in
             switch result {
             case .success(let bookmarks):
-                PersistenceManager.allBookmarkedUsers = bookmarks.map { $0.login }
+                PersistenceManager.allBookmarkedUsers = bookmarks.map { $0.login.lowercased() }
             case .failure:
                 fatalError("Unable to establish bookmarks persistence process.")
             }

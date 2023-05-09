@@ -64,7 +64,8 @@ class SearchVC: UIViewController {
         guard isUsernameEntered else {
             presentGFAlert(
                 title: "Username No-No",
-                message: "Looks like you forgot to input anything except emptiness in that search field 🥺."
+                message: "Looks like you forgot to input anything except emptiness in that search field 🥺.",
+                haptic: .error
             )
             return
         }

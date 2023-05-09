@@ -21,6 +21,7 @@ extension UIViewController {
         title: String,
         message: String,
         buttonTitle: String = "OK",
+        haptic: UINotificationFeedbackGenerator.FeedbackType,
         completion: (() -> Void)? = nil
     ) {
 
@@ -33,6 +34,7 @@ extension UIViewController {
         alertVC.modalPresentationStyle = .overFullScreen
         alertVC.modalTransitionStyle = .crossDissolve
 
+        UINotificationFeedbackGenerator().notificationOccurred(haptic)
         present(alertVC, animated: true)
     }
 
@@ -56,6 +58,7 @@ extension UIViewController {
         alertVC.modalPresentationStyle = .overFullScreen
         alertVC.modalTransitionStyle = .crossDissolve
 
+        UINotificationFeedbackGenerator().notificationOccurred(.error)
         present(alertVC, animated: true)
     }
 

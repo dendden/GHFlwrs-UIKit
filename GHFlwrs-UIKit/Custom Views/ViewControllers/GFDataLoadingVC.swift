@@ -69,7 +69,7 @@ class GFDataLoadingVC: UIViewController {
     func presentNetworkError(_ error: Error, completion: (() -> Void)? = nil) {
         dismissLoadingProgressView()
         if let networkError = error as? GFNetworkError {
-            presentGFAlert(title: "Problem 🤦🏼‍♂️", message: networkError.rawValue, completion: completion)
+            presentGFAlert(title: "Problem 🤦🏼‍♂️", message: networkError.rawValue, haptic: .error, completion: completion)
         } else {
             presentGenericError(completion: completion)
         }

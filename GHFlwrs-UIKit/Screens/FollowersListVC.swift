@@ -73,7 +73,6 @@ class FollowersListVC: GFDataLoadingVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureVC()
         configureSearchController()
         configureCollectionView()
 
@@ -85,10 +84,11 @@ class FollowersListVC: GFDataLoadingVC {
         super.viewWillAppear(animated)
 
         navigationController?.setNavigationBarHidden(false, animated: true)
+        configureBookmarkButton()
     }
 
     /// Configures and adds bookmark button to the navigation toolbar.
-    private func configureVC() {
+    private func configureBookmarkButton() {
         selectBookmarkImage()
         let bookmarkButton = UIBarButtonItem(
             image: bookmarkImage,
@@ -102,7 +102,7 @@ class FollowersListVC: GFDataLoadingVC {
     /// Checks ``username`` against the ``PersistenceManager``.``PersistenceManager/allBookmarkedUsers``
     /// array of usernames and sets bookmark image that corresponds to user's bookmarked status.
     private func selectBookmarkImage() {
-        if PersistenceManager.allBookmarkedUsers.contains(username) {
+        if PersistenceManager.allBookmarkedUsers.contains(username.lowercased()) {
             bookmarkImage = SystemImages.bookmarkFill
         } else {
             bookmarkImage = SystemImages.bookmarkEmpty
@@ -266,7 +266,8 @@ class FollowersListVC: GFDataLoadingVC {
                 dismissLoadingProgressView()
                 presentGFAlert(
                     title: "Bookmark Error",
-                    message: "There's a problem retrieving sufficient user info to bookmark 🤷🏻‍♂️"
+                    message: "There's a problem retrieving sufficient user info to bookmark 🤷🏻‍♂️",
+                    haptic: .error
                 )
             }
         }
@@ -300,16 +301,18 @@ class FollowersListVC: GFDataLoadingVC {
             guard let self else { return }
             if let error {
                 DispatchQueue.main.async {
-                    self.presentGFAlert(title: "Bookmark Error", message: error.rawValue)
+                    self.presentGFAlert(title: "Bookmark Error", message: error.rawValue, haptic: .error)
                 }
             } else {
                 DispatchQueue.main.async {
                     self.presentGFAlert(
                         title: "Nailed it 📌",
                         message: "You can now find \(user.login) in 📖 Bookmarks tab.",
-                        buttonTitle: "Sweet") {
+                        buttonTitle: "Sweet",
+                        haptic: .success
+                    ) {
                             // update bookmark button appearance
-                            self.configureVC()
+                            self.configureBookmarkButton()
                         }
                 }
             }
@@ -375,7 +378,7 @@ extension FollowersListVC: UserInfoVCDelegate {
     func didRequestFollowersList(for username: String) {
         self.username = username
         title = username
-        configureVC()   // this updates bookmark button
+        configureBookmarkButton()   // this updates bookmark button
         page = 1
         userHasMoreFollowersToLoad  = true
         followers.removeAll()

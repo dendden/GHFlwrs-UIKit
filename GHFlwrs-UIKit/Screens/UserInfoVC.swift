@@ -168,7 +168,8 @@ extension UserInfoVC: GFRepoItemVCDelegate, GFFollowerItemVCDelegate {
         guard let url = URL(string: urlString) else {
             presentGFAlert(
                 title: "Broken link 🤬",
-                message: "It looks like the link to \(username!)'s profile on GitHub is invalid."
+                message: "It looks like the link to \(username!)'s profile on GitHub is invalid.",
+                haptic: .error
             )
             return
         }
@@ -181,7 +182,8 @@ extension UserInfoVC: GFRepoItemVCDelegate, GFFollowerItemVCDelegate {
             presentGFAlert(
                 title: "Zero means zero",
                 message: "We can't be bothered to refresh the UI for 0 followers, sorry! 😤",
-                buttonTitle: "Sad but true"
+                buttonTitle: "Sad but true",
+                haptic: .error
             )
             return
         }
