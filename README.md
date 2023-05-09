@@ -1,6 +1,6 @@
 # GHFlwrs-UIKit
 
-The "GitHub Followers" app from Sean Allen's "Take Home Project" course, with few custom improvements.
+The "GitHub Followers" app from Sean Allen's ["Take Home Project" course](https://seanallen.teachable.com/p/take-home), with few custom improvements.
 
 <p align="center">
   <img src="/Screens/1.png" width="200" title="Initial search screen">
